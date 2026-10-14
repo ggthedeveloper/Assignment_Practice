@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F5F6F8">
+<script>try{ if(localStorage.getItem("pol-theme") === "dark") document.documentElement.setAttribute("data-theme","dark"); }catch(e){}</script>
+<title>Psychology of Learning – Assignment Quiz (Weeks 0–12)</title>
+<style>
+  :root{
+    --bg:#F5F6F8; --surface:#FFFFFF; --ink:#16202B; --muted:#5B6773; --line:#D9DEE4;
+    --accent:#254E70; --accent-soft:#E8EEF4;
+    --ok:#1E7A4C; --ok-bg:#E7F5EC;
+    --bad:#B3261E; --bad-bg:#FCEBEA;
+    --note-bg:#FFF6DC; --note-line:#C99A1B;
+    --nav-bg:rgba(245,246,248,.96); --hover:#F8FAFC; --on-strong:#FFFFFF;
+    --serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  html[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#0F151B; --surface:#18212A; --ink:#E6EBF0; --muted:#9AA7B4; --line:#2E3A47;
+    --accent:#7FB0D9; --accent-soft:#1F2D3A;
+    --ok:#5FD39A; --ok-bg:#173226;
+    --bad:#FF8A80; --bad-bg:#3B1E1C;
+    --note-bg:#3A3118; --note-line:#C99A1B;
+    --nav-bg:rgba(15,21,27,.96); --hover:#1E2934; --on-strong:#0F1A24;
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:120px}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5}
+  button{font:inherit;color:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+  header.top{background:var(--surface);border-bottom:1px solid var(--line)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px}
+  header.top .wrap{padding-top:28px;padding-bottom:20px}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(1.7rem,4.5vw,2.3rem);line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+  .sub{margin:0;color:var(--muted);font-size:.95rem}
+
+  nav.weeks{position:sticky;top:0;z-index:5;background:var(--nav-bg);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  .navrow{display:flex;align-items:center;gap:8px;padding-top:10px;padding-bottom:10px}
+  .chips{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:2px}
+  .themebtn{flex:0 0 auto;min-height:38px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600;font-size:.9rem}
+  .themebtn:hover{border-color:var(--accent)}
+  .themebtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-strong)}
+  .chip{flex:0 0 auto;min-width:42px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600;font-size:.9rem}
+  .chip:hover{border-color:var(--accent)}
+  .chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-strong)}
+  .chip.done::after{content:" ✓";font-weight:700}
+
+  .bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:18px 0 6px}
+  .bar h2{font-family:var(--serif);font-size:1.35rem;margin:0;flex:1 1 auto}
+  .score{font-size:.92rem;color:var(--muted)}
+  .score b{color:var(--ink)}
+  .track{height:6px;background:var(--line);border-radius:3px;overflow:hidden;width:100%}
+  .fill{height:100%;width:0;background:var(--accent);transition:width .25s ease}
+  .ghost{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:8px;font-size:.88rem}
+  .ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  .banner{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--note-line);background:var(--note-bg);font-size:.9rem;border-radius:0 6px 6px 0}
+
+  .q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;margin:16px 0}
+  .q .meta{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:4px}
+  .q .text{font-family:var(--serif);font-size:1.12rem;line-height:1.45;margin:0 0 12px}
+  .opts{display:grid;gap:8px}
+  .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+  .opt .ltr{flex:0 0 26px;height:26px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.85rem;display:grid;place-items:center}
+  .opt .lbl{padding-top:2px}
+  @media (hover:hover){ .opt:not(:disabled):hover{border-color:var(--accent);background:var(--hover)} }
+  .opt:disabled{cursor:default;color:var(--ink)}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.correct .ltr{background:var(--ok);color:var(--on-strong)}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .opt.wrong .ltr{background:var(--bad);color:var(--on-strong)}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.sel .ltr{background:var(--accent);color:var(--on-strong)}
+  .opt.reveal{border-color:var(--ok);border-style:dashed;background:var(--ok-bg)}
+  .opt.reveal .ltr{background:var(--ok);color:var(--on-strong)}
+
+  .actions{display:flex;gap:8px;margin-top:12px}
+  .show{background:var(--accent);color:var(--on-strong);border:1px solid var(--accent);padding:7px 14px;border-radius:8px;font-weight:600;font-size:.9rem}
+  .show:hover{filter:brightness(1.12)}
+  .reset{background:transparent;border:1px solid var(--line);padding:7px 14px;border-radius:8px;font-size:.9rem}
+  .reset:hover{border-color:var(--accent);color:var(--accent)}
+  .result{margin-top:12px;padding:10px 12px;border-radius:8px;background:var(--accent-soft);font-size:.93rem}
+  .result.good{background:var(--ok-bg)}
+  .result.miss{background:var(--bad-bg)}
+  .result .ref{display:block;margin-top:4px;color:var(--muted);font-size:.85rem}
+  [hidden]{display:none!important}
+
+  .next{display:flex;justify-content:flex-end;margin:8px 0 56px}
+  .next .show{padding:9px 18px}
+
+  html{-webkit-text-size-adjust:100%}
+  button{touch-action:manipulation}
+  .opt .lbl{min-width:0;overflow-wrap:anywhere}
+  @media (max-width:640px){
+    html{scroll-padding-top:70px}
+    header.top .wrap{padding-top:18px;padding-bottom:14px}
+    .sub{font-size:.88rem}
+    .chip{min-height:40px}
+    .bar h2{flex-basis:100%}
+    .score{flex:1 1 100%}
+    .bar .ghost,.bar .show{flex:1 1 0;min-height:44px}
+    .q{padding:14px 12px 12px;margin:12px 0}
+    .q .text{font-size:1.05rem}
+    .opt{min-height:48px;padding:10px}
+    .actions .show,.actions .reset{flex:1;min-height:44px}
+    .next .show{width:100%;min-height:48px}
+  }
+  @media (prefers-reduced-motion:reduce){ .fill{transition:none} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>Psychology of Learning</h1>
+    <p class="sub">NPTEL assignment questions, Weeks 0 to 12. 130 questions, none added. Two mock tests of 50 questions each reuse them. Pick an option to check it, or use Show answer.</p>
+  </div>
+</header>
+
+<nav class="weeks" aria-label="Choose a week">
+  <div class="wrap navrow">
+    <div class="chips" id="chips"></div>
+    <button class="themebtn" id="themeBtn" type="button" aria-pressed="false" aria-label="Dark mode">&#9790;&#xFE0E; Dark</button>
+  </div>
+</nav>
+
+<main class="wrap" id="main" tabindex="-1">
+  <div class="bar">
+    <h2 id="viewTitle"></h2>
+    <span class="score" id="score" aria-live="polite"></span>
+    <button class="ghost" id="resetView" type="button">Reset this view</button>
+    <button class="show" id="submitBtn" type="button" hidden>Submit test</button>
+    <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
+  </div>
+  <div id="banner"></div>
+  <div id="list"></div>
+  <div class="next" id="submitWrap" hidden><button class="show" id="submitBottom" type="button">Submit test</button></div>
+  <div class="next" id="nextWrap"><button class="show" id="nextBtn" type="button"></button></div>
+</main>
+
+<script>
+/* Each question: [text, options, correctIndex, slideRef, note] */
+const TF = ["True", "False"];
+
+const WEEKS = [
+/* ---------- Week 0 ---------- */
+{ n:0, qs:[
+ ["What is Psychology?",["Just a social media trend","An art of living","A subject about human body","A study of cognitive processes & behavior"],3],
+ ["A broad field of study that explores a variety of questions about thoughts, feelings and actions is ___?",["Society","Globalization","Psychology","Social Science"],2],
+ ["Learning has been a central topic of research in ___.",["Chemistry","Physics","Mathematics","Psychology"],3],
+ ["The word Psyche means ___?",["Body or physique","Mind or soul","Spirituality","Hormones"],1],
+ ["The ___ of learning focuses on how people learn.",["psychology","english","chemistry","none of the given"],0],
+ ["“To help people to function effectively and fulfill their own unique potential” is the aim of ___?",["Humanistic psychology","Evolutionary biology","Computer science","Microbiology"],0],
+ ["Psychology is not an independent science, but dependent on other fields.",TF,1],
+ ["The study of changes in an individual’s behavior during his/her lifetime is called ___.",["Hormonal psychology","Gender psychology","Developmental Psychology","Genetics or Heredity"],2],
+ ["The study of differences and similarities in the behavior of animals of different species is called ___.",["Developmental psychology","Cultural psychology","Personality psychology","Comparative Psychology"],3],
+ ["Humans are incapable of learning.",TF,1]
+]},
+/* ---------- Week 1 ---------- */
+{ n:1, qs:[
+ ["Learning is often seen as the contiguous causal effect of ____ on behavior.",["blood","bone density","trauma","experience"],3,"3"],
+ ["In order to say that learning has occurred, a hidden change in behavior must occur.",TF,1,"3"],
+ ["Which of the following is not a mental construct?",["skeleton","knowledge","representations","associations"],0,"4"],
+ ["Learning changes the ___ structure of the brain through the process of continuous interactions between the learner and the external environment.",["physical","social","biological","none of the given"],0,"4"],
+ ["___ shapes the learning process.",["Only thoughts","Only emotions","Both thoughts and emotions","Neither thoughts nor emotions"],2,"7"],
+ ["Watson’s work included the famous Little Albert experiment in which he conditioned a small child to ___ a white rat.",["fear","love","hate","play with"],0,"7"],
+ ["Behaviorism dominated psychology for much of the early ___ century.",["20th","19th","18th","17th"],0,"7"],
+ ["The state of “conscious incompetence” may be valuable ____ of a learning experience.",["at the end","in the middle","2 years after the end","at the start"],3,"11"],
+ ["Which of the following is not an outcome of effective e-learning?",["wider range of strategies","more reflective approach","more positive emotions towards learning","more disconnected knowledge"],3,"14"],
+ ["Instrumental conditioning is an example of ___ learning.",["sensitization","habituation","associative","meaningful"],2,"24"]
+]},
+/* ---------- Week 2 ---------- */
+{ n:2, qs:[
+ ["The three major types of learning described by ___ psychology are classical conditioning, operant conditioning and observational learning.",["cognitive","behavioral","emotional","evolutionary"],1,"2"],
+ ["According to the view of Watson, psychology is ___.",["subjective","only descriptive","experimental","about internal mental processes that cannot be measured and observed"],2,"3"],
+ ["___ is given by Ivan Pavlov.",["Operant conditioning","Functional conditioning","Classical conditioning","Modern conditioning"],2,"5"],
+ ["The process by which organisms learn to respond to certain stimuli but not to others is known as ___.",["stimulus generalization","stimulus appreciation","stimulus discrimination","stimulus differentiation"],2,"11"],
+ ["Higher-order conditioning is intrinsically weaker than its first-order counterpart.",TF,0,"12"],
+ ["____ is the process of gradually changing the quality of a response.",["Shaping","Modeling","Cueing","Shifting"],0,"23"],
+ ["The works of ___ were instrumental in engendering the dramatic shift from behaviorism to cognitive theories.",["Edward C. Tolman","Jean Piaget","German Gestalt","All of the given"],3,"39"],
+ ["___ intelligence is the ability to perceive the visual–spatial world accurately and involves sensitivity to color, line, shape, form, space, and the potential for recognizing and manipulating the patterns of spaces.",["Interpersonal","Spatial","Bodily-kinesthetic","Linguistic"],1,"48"],
+ ["Sternberg proposed his theory in 1985 as an alternative to the idea of the ___.",["general intelligence factor","multiple intelligences","specific intelligence factor","unconscious intelligence"],0,"51"],
+ ["Which of the following is not a kind of product in the structure of intellect model?",["symbolic","classes","systems","implications"],0,"79"]
+]},
+/* ---------- Week 3 ---------- */
+{ n:3, qs:[
+ ["The connections between nerves cells are called ___.",["systems","syntaxes","neurons","synapses"],3,"2"],
+ ["In order to create a ___, information must be changed into a usable form, which occurs through a process known as encoding.",["past memory","new imagination","new memory","past imagination"],2,"3"],
+ ["Calling back the stored information in response to some cue for use in a process or activity is called ___.",["Retrieval","Recall","Recollection","All of the given"],3,"3"],
+ ["For many with ___ deficits, reading facial expressions and knowing how to respond are confusing daily challenges.",["memory","intelligence","social cognition","biological cognition"],2,"8"],
+ ["The Information Processing View of Learning assumes that there are limits to how much information can be processed at each stage.",TF,0,"9"],
+ ["The Information Processing View of Learning assumes that information process is involved in ___",["forgetting","remembering","perceiving","All of the given"],3,"9"],
+ ["The capacity of the sensory register is ___.",["very small","very large","7+/-2 chunks","unlimited"],1,"14"],
+ ["Most children do not begin to engage in the process of rehearsal on their own until about age ___.",["seven","two","thirteen","one"],0,"16"],
+ ["___ provides an interface between the sub-systems of working memory and the part of long term memory specialized for episodic memory.",["Phonological loop","Visuo-spatial sketchpad","Retrieval buffer","Episodic buffer"],3,"27"],
+ ["Memories of specific episodes of one’s life refers to ___.",["declarative memory","experimental episodic memory","autobiographical episodic memory","procedural memory"],2,"34"]
+]},
+/* ---------- Week 4 ---------- */
+{ n:4, qs:[
+ ["___ thinking is the ability to create mental representations of objects, places, events, or people in your mind.",["General","Creative","Divergent","Symbolic"],3,"3"],
+ ["We compare new information to our ___ of the person, place, or thing, so we know how to categorize the new information mentally.",["protofit","protobite","prototype","none of the given"],2,"4"],
+ ["Which of the following is not true?",["Thinking is a higher mental process","Thinking is a sub-vocal talking","Thinking is fulfilling a need or problem solving","Thinking is only done in verbal symbols"],3,"6"],
+ ["Mental images are ___.",["Auditory","Visual","Gustatory","All of the given"],3,"7"],
+ ["___ organize complex phenomena into simpler, easily understandable, and usable categories and help to solve our problems.",["Concepts","Propositions","Constructs","Components"],0,"8"],
+ ["The lowermost level of Bloom’s taxonomy is ___.",["remember","apply","understand","analyze"],0,"13"],
+ ["The psychomotor domain of the Bloom’s taxonomy is concerned with ___.",["Biological makeup","Thoughts and beliefs","Feelings and emotions","Skilled behavior"],3,"17"],
+ ["Which of the following is an example of meta-cognition skills?",["Ignoring your limits","Self-monitoring","Skimming all important information","All of the given"],1,"24"],
+ ["___ critical thinking skill helps you analyze and process information to come to an unbiased conclusion.",["Open-mindedness","Self-regulation","Self-control","Observation"],0,"32"],
+ ["The inspiration phase of the creative thinking process refers to the ___ stage.",["Incubation","Insight","Evaluation","Preparation"],3,"51"]
+]},
+/* ---------- Week 5 ---------- */
+{ n:5, qs:[
+ ["Which of the following is true about motivation?",["It is a physical impulse","It is an external process","It has a willingness to activate but not channel the attitudes of learners","None of the given"],3,"2"],
+ ["The term “motivation” comes from a ___ word.",["Greek","Latin","Hindi","Bengali"],1,"4"],
+ ["It is called extrinsic motivation if causal factor is ___.",["curiosity","social pressure","self-satisfaction","needs"],1,"5"],
+ ["___ motivation is considered to be more crucial for students as it is associated with deep learning, better performance and self-efficacy.",["Intrinsic","Extrinsic","Introjected regulation","None of the given"],0,"7"],
+ ["___ proposed that there are three primary drives that drive human behavior.",["Hull","Watson","Piaget","Gestalt"],0,"12"],
+ ["Expectancy Theory of Motivation was developed by ___.",["Vroom","Hull","Murray","None of the given"],0,"21"],
+ ["An example of ___ is thinking, “If I work hard I can achieve the targets my boss has set for me”.",["purposeful","valence","instrumentality","expectancy"],3,"23"],
+ ["In SMART goals, T stands for ___.",["Temporary","Time-based","Tough","Testing"],1,"27"],
+ ["Friendship is a ___ need in Maslow’s hierarchy.",["Love and belonging","Esteem","Physiological","Safety"],0,"31-32"],
+ ["___ theory differentiates between autonomous motivation and controlled motivation.",["Arousal","Goal-setting","Need hierarchy","Self-determination"],3,"37"]
+]},
+/* ---------- Week 6 ---------- */
+{ n:6, qs:[
+ ["According to Daniel Goleman, ___ component of emotional intelligence focuses on how we handle relationships with others.",["self-awareness","motivation","empathy","emotional regulation"],2,"2"],
+ ["Emotional intelligence can be considered a type of ___ intelligence.",["academic","genetic","social","external"],2,"3"],
+ ["Noticing a difficult emotion and slowing down or resisting any impulsive action that may follow highlights ___ component of emotional intelligence.",["Self-regulation","Motivation","Emotional literacy","Empathy"],0,"4"],
+ ["The following are signs of emotional intelligence, except ___.",["strong sense of curiosity","holding onto mistakes","ability to manage emotions in difficult situations","self-confidence"],1,"7"],
+ ["Perceiving emotions means ___.",["Ignoring signals","Understanding only what somebody is saying to you","Understanding only somebody’s facial expression","Understanding both verbal and nonverbal signals"],3,"11"],
+ ["___ suggests that 10 distinct components provide the scaffolding of emotionally and socially intelligent behaviors:",["Bar-On","Goleman","Salovey","Mayer"],0,"15"],
+ ["Which of the following is a facilitator of EQ?",["optimism","happiness","independence","all of the given"],3,"18","The answer key prints “a = all of the given”, but “all of the given” is option d, so d is used here."],
+ ["___ is a strategy for improving one’s self-awareness.",["rejecting feedback","using critical self-talk daily","developing a fixed mindset","pursuing one’s passion"],3,"20"],
+ ["Having students create autobiographies is an example of creating opportunities for ___.",["emotional labor","emotional contagion","metacognition","none of the given"],2,"23"],
+ ["Which of the following is not true about management of emotions?",["It is essentially a private act","It is directly regulated by others","It is influenced by cultural norms","It is influenced by what society defines as appropriate to feel and express"],1,"30"]
+]},
+/* ---------- Week 7 ---------- */
+{ n:7, qs:[
+ ["Which of the following is false about learning according to Gagne’s definition?",["It is a change in human disposition","It persists over a period of time","It is simply ascribable to processes of growth","None of the above"],2,"3"],
+ ["Manual or physical skills come under ___ component of Bloom’s taxonomy.",["Cognitive","Affective","Psychomotor","Physical"],2,"4"],
+ ["Reflection, learning and education was explored by ___.",["Carl Rogers","John Watson","Benjamin Bloom","John Dewey"],3,"5"],
+ ["The principles of ___ refer to how close in time two events must be for a bond to be formed.",["behavior","reinforcement","repetition","contiguity"],3,"6"],
+ ["___ gives information to learners about their success or failure concerning the task at hand.",["Cognitive feedback","Emotional feedback","Reinforcement","Physical feedback"],0,"7"],
+ ["The ___ orientation to learning has a quality of personal involvement—the whole person in both feeling and cognitive aspects being in the learning event.",["behavioral","cognitive","humanistic","social"],2,"8","The answer key leaves the letter blank and lists “humanistic”, which is option c."],
+ ["Learning through play is ___ learning.",["primary","secondary","passive","active"],3,"15"],
+ ["People with ___ learning style are prone to sorting their ideas after speaking, rather than thinking ideas through before.",["logical","solitary","visual","auditory"],3,"17"],
+ ["Which of the following statements is false?",["Effective instruction is static","Effective instruction is eclectic","Effective instruction is generative","Effective instruction is interactive"],0,"22"],
+ ["In ADDIE model, I stand for ___.",["instruction","implementation","integration","induction"],1,"33"]
+]},
+/* ---------- Week 8 ---------- */
+{ n:8, qs:[
+ ["The word ‘pedagogy’ has been derived from the ___ word “pedagogue”.",["Latin","Sanskrit","Greek","English"],2,"3"],
+ ["Which of the following statements is not true about pedagogy?",["It is a method or way of teaching","It is derived from the Greek word “pedagogue”","It helps a teacher understand how learning should be facilitated.","It harms the quality of teaching and learning."],3,"3-5"],
+ ["Pedagogy can enhance the student-teacher relationship.",TF,0,"3"],
+ ["___ learning is based on the model that knowledge can be created within a population where members actively interact by sharing experiences and take on asymmetry roles.",["integrative","inquiry-based","collaborative","constructivist"],2,"6"],
+ ["The Pedagogical Model provides an overview of the learning cycle and breaks it down into ___ domains or phases of instruction.",["five","three","two","seven"],0,"9"],
+ ["Which of the following is not a type of inquiry-based approach?",["confrontation","structure","guided","open"],0,"10"],
+ ["In experiential learning, students are engaged ___.",["intellectually","soulfully","socially","all of the given"],3,"14"],
+ ["___ stage of experiential theory by Kolb focuses on planning.",["concrete experience","abstract conceptualization","reflective observation","active experimentation"],3,"21"],
+ ["People with a ___ learning style can often act on “gut feeling” and will rely on others’ analysis rather than their own.",["accommodating","converging","diverging","assimilating"],0,"25"],
+ ["According to the ___ principle, students learn better from animation and narration than from animation and on-screen text.",["multimedia","modality","coherence","temporal contiguity"],1,"45"]
+]},
+/* ---------- Week 9 ---------- */
+{ n:9, qs:[
+ ["E-learning is any form of ___.",["teaching","training","tutoring","all of the given"],3,"2"],
+ ["___ is a feature of e-learning.",["difficulty in access","user friendliness","social injustice","closed learning"],1,"2"],
+ ["E-learning is a synonym of audio-visual learning, multimedia learning, and distance learning.",TF,1,"5"],
+ ["Which of the following is not a type of e-learning?",["text-driven","interactive","simulation","physical"],3,"5-6"],
+ ["Which of the following is not a benefit of e-learning?",["It can accommodate the need of a housewife","People can revise the learning content as many times as they want","It facilitates in developing and communicating new training policies","None of the given"],3,"6"],
+ ["Good learners know ___.",["What they are learning","Why they are learning","How they are learning","All of the given"],3,"12"],
+ ["Learners may multitask when engaging in an online course, which could be resulting in ___.",["hyperfocus","better retrieval","shorter attention spans","None of the given"],2,"19"],
+ ["___ learning is the crucial determinant of successful e-learning.",["passive","retrospective","social","active"],3,"13"],
+ ["The brain can process 36,000 visual cues per ___.",["hour","second","day","year"],0,"14"],
+ ["For effective learning, online courses should ___.",["use headings","use complex language","present long pieces of text","use random images"],0,"20"]
+]},
+/* ---------- Week 10 ---------- */
+{ n:10, qs:[
+ ["During Covid-19 the world was busy in preparing 1.5 billion learners for the new normal, i.e., ___ learning.",["ineffective","physical","remote","experiential"],2,"2"],
+ ["To develop learner readiness for online learning, training sessions on ___ are helpful.",["netiquettes","time management","developing study skills","all of the given"],3,"4"],
+ ["The typical picture of a teacher being a dispenser of knowledge to the students has been replaced by that of a ___.",["obstructor","parent","friend","facilitator"],3,"6"],
+ ["In 2018, Global Education and Skills Forum noted that the ‘future’ teacher would need the 5 skills to thrive in the 21st century. Which of the following is not one of them?",["Strong social skills","Data analysis","External focus","Strictness"],3,"6"],
+ ["Participatory education demands ___ so as to build a needs-based approach to teaching.",["creativity","stubbornness","reward","none of the given"],0,"8"],
+ ["Students who consider intelligence as a malleable entity tend to focus on their obstacles instead of goals.",TF,1,"10"],
+ ["Which of the following is not a principle to enhance student learning.",["What students already know affects their learning","Learning is context-based","Students’ cognitive development and learning is limited by the general stages of development.","The acquisition of knowledge and skills in the long term depends largely on practice."],2,"10-11"],
+ ["___ feedback to students is important for learning.",["Unclear","Late","Harsh","Explanatory"],3,"14"],
+ ["Mastery goals are those that are geared towards the acquisition or improvement of ___.",["Skills","Number of students in a classroom","Teacher feedback","None of the given"],0,"15"],
+ ["The vast majority of formative assessment is ___.",["Formal","Incorrect","Written","informal"],3,"44"]
+]},
+/* ---------- Week 11 ---------- */
+{ n:11, qs:[
+ ["Social cognition has a protracted development through infancy to ___.",["teenage","old-age","adulthood","death"],2,"2"],
+ ["Which of the following abilities comes under social cognition?",["Face processing","Joint attention","Theory of mind","All of the given"],3,"3"],
+ ["Under social cognition, abilities involved in affective processing are often called ___.",["hot","cold","white","black"],0,"3"],
+ ["Social schemas refer to people’s mental representations of social ___.",["values","memories","skills","patterns"],3,"5"],
+ ["During the earliest stages of development, children are very ___-centric. They see the world from their own perspective and struggle to think about how other people may view the world.",["selfish","ego","conscious","emotional"],1,"6"],
+ ["A theory of mind refers to a person’s ability to understand and think about the ___ of other people.",["behaviors","family backgrounds","mental states","language"],2,"8"],
+ ["The same social behavior in one cultural setting might have a very different meaning and interpretation if it were to occur or be observed in another culture.",TF,0,"9"],
+ ["Social cognitive theory by Bandura focuses on concepts of ___.",["self-efficacy","modeling","observational learning","all of the given"],3,"11"],
+ ["The central tenet of Bandura’s social-cognitive theory is that people seek to develop a sense of ___ over the important events in their lives.",["agency","dependency","attachment","emotion"],0,"13"],
+ ["___ hypothesis suggests that social processes influence how information is selected, organized, integrated, and retrieved.",["activation","cognitive influence","interaction","social cue strength"],1,"30"]
+]},
+/* ---------- Week 12 ---------- */
+{ n:12, banner:"No answer-key PDF was provided for this week. The marked answers are the ones from your saved submission on the course page.", qs:[
+ ["Sustainability in economic sustainability is ___.",["multidimensional","bidimensional","unidimensional","none of the given"],0],
+ ["The term “sustainable development” was first mentioned in a book related to the 1972 UN Stockholm conference on ___.",["water","poverty","economic crisis","human environment"],3],
+ ["Environmental sustainability focuses on impacts of processes, products and services on ___.",["water","biodiversity","human health","all of the given"],3],
+ ["Which of the following does not come under social sustainability?",["Labour practices","Revenue generation","Human rights","Business ethics"],1],
+ ["SDG ___ focuses on clean water and sanitation.",["1","17","6","3"],2],
+ ["SDG 16 focuses on ___.",["No poverty","No hunger","Good health","Peace and justice"],3],
+ ["On 20 October 2020, the Higher Education Sustainability Initiative (HESI) raised the flag of higher education as a driver for sustainable development and inclusive societies on the first day of the ___ 2020.",["National Sustainability Meeting","National Teachers Meeting","Global Childrens’ Meeting","Global Education Meeting"],3],
+ ["Education is related to all SDGs.",TF,0],
+ ["Successful implementation of ESD requires a shift in focus from ___.",["teaching to learning","learning to teaching","reading to speaking","knowing to ignoring"],0],
+ ["___ competency is the ability to reflect on one’s own role in the local community and (global) society.",["collaboration","self-awareness","strategic","normative"],1]
+]}
+];
+
+/* ---------- Mock tests: fixed picks from the questions above ---------- */
+function seeded(seed){ return ()=> (seed = (seed*1664525 + 1013904223) >>> 0) / 4294967296; }
+function shuffled(arr, rnd){
+  const a = arr.slice();
+  for(let i = a.length-1; i > 0; i--){ const j = Math.floor(rnd()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+/* MOCKS[0], MOCKS[1]: lists of [week, questionIndex]; 50 each, no overlap */
+const MOCKS = (function(){
+  const rnd = seeded(2026);
+  const m = [[], []];
+  WEEKS.forEach((wk, w)=>{
+    const order = shuffled(wk.qs.map((_,i)=>i), rnd);
+    const k = w <= 10 ? 4 : 3;               // 11*4 + 2*3 = 50 per test
+    order.slice(0, k).forEach(i=>m[0].push([w,i]));
+    order.slice(k, 2*k).forEach(i=>m[1].push([w,i]));
+  });
+  return m.map(list=>shuffled(list, rnd));
+})();
+
+/* ---------- App ---------- */
+const LETTERS = "ABCDEFG";
+const state = {};            // key "w-i" -> {picked, shown}
+const submitted = {m1:false, m2:false};   // mock tests: answers are hidden until submitted
+let view = "0";              // "0".."12" or "all"
+let cards = [];              // current view's card controllers
+
+const $ = id => document.getElementById(id);
+function el(tag, cls, text){ const e = document.createElement(tag); if(cls) e.className = cls; if(text !== undefined) e.textContent = text; return e; }
+function stateFor(w,i,ns){ const k = (ns||"")+w+"-"+i; return state[k] || (state[k] = {picked:null, shown:false}); }
+function isLocked(s){ return s.picked !== null || s.shown; }
+
+function weekStats(w){
+  let answered = 0, correct = 0;
+  WEEKS[w].qs.forEach((q,i)=>{ const s = stateFor(w,i); if(s.picked !== null){ answered++; if(s.picked === q[2]) correct++; } });
+  return {answered, correct, total: WEEKS[w].qs.length};
+}
+
+function buildCard(w, i, metaText, ns){
+  const q = WEEKS[w].qs[i];
+  const [text, opts, ans, slide, extra] = q;
+  const s = stateFor(w,i,ns);
+  const examKey = ns ? ns.slice(0,-1) : null;   // "m1" / "m2" for mock tests
+
+  const card = el("article","q");
+  card.id = (ns||"").replace(":","-")+"w"+w+"q"+(i+1);
+  card.appendChild(el("div","meta", metaText));
+  card.appendChild(el("p","text", text));
+
+  const list = el("div","opts");
+  list.setAttribute("role","group");
+  list.setAttribute("aria-label","Answer options");
+  const btns = opts.map((o,k)=>{
+    const b = el("button","opt"); b.type = "button";
+    b.appendChild(el("span","ltr", LETTERS[k]));
+    b.appendChild(el("span","lbl", o));
+    b.addEventListener("click", ()=>{
+      if(examKey){ if(submitted[examKey]) return; s.picked = k; paint(); refresh(); return; }   // mock: change freely until submit
+      if(isLocked(s)) return; s.picked = k; paint(); refresh();
+    });
+    list.appendChild(b); return b;
+  });
+  card.appendChild(list);
+
+  const actions = el("div","actions");
+  const showBtn = el("button","show","Show answer"); showBtn.type = "button";
+  const resetBtn = el("button","reset","Try again"); resetBtn.type = "button";
+  actions.append(showBtn, resetBtn);
+  card.appendChild(actions);
+
+  const result = el("div","result"); result.setAttribute("aria-live","polite");
+  card.appendChild(result);
+
+  showBtn.addEventListener("click", ()=>{ if(isLocked(s)) return; s.shown = true; paint(); refresh(); resetBtn.focus(); });
+  resetBtn.addEventListener("click", ()=>{ s.picked = null; s.shown = false; paint(); refresh(); showBtn.focus(); });
+
+  function paint(){
+    const locked = examKey ? submitted[examKey] : isLocked(s);
+    btns.forEach((b,k)=>{
+      b.disabled = locked;
+      b.classList.remove("correct","wrong","reveal","sel");
+      if(examKey && !locked){
+        if(k === s.picked) b.classList.add("sel");            // taking the test: no right/wrong hints
+      } else if(s.picked !== null){
+        if(k === ans) b.classList.add("correct");
+        else if(k === s.picked) b.classList.add("wrong");
+      } else if((s.shown || examKey) && k === ans){
+        b.classList.add("reveal");
+      }
+    });
+    showBtn.hidden = locked || !!examKey;
+    resetBtn.hidden = examKey ? true : !locked;
+    actions.hidden = showBtn.hidden && resetBtn.hidden;
+    result.hidden = !locked;
+    result.className = "result";
+    if(!locked) return;
+    result.textContent = "";
+    const correctText = LETTERS[ans]+". "+opts[ans];
+    const line = el("div");
+    if(s.picked !== null){
+      if(s.picked === ans){ result.classList.add("good"); line.textContent = "Correct. " + correctText; }
+      else { result.classList.add("miss"); line.textContent = "Not quite. Correct answer: " + correctText; }
+    } else {
+      line.textContent = (examKey ? "Not answered. Correct answer: " : "Answer: ") + correctText;
+    }
+    result.appendChild(line);
+    const notes = [];
+    if(slide) notes.push("Lecture notes, Week "+w+", slide "+slide+".");
+    if(extra) notes.push(extra);
+    if(!slide && w === 12) notes.push("Marked answer comes from your submission; no official key was supplied.");
+    if(notes.length){ const r = el("span","ref", notes.join(" ")); result.appendChild(r); }
+  }
+  paint();
+  return {card, reset(){ s.picked = null; s.shown = false; paint(); }};
+}
+
+const isMock = v => v === "m1" || v === "m2";
+
+/* Everything shown in a given view, as {w, i, ns} */
+function itemsFor(v){
+  if(isMock(v)) return MOCKS[v === "m1" ? 0 : 1].map(([w,i])=>({w, i, ns:v+":"}));
+  const weeks = v === "all" ? WEEKS.map(x=>x.n) : [Number(v)];
+  const items = [];
+  weeks.forEach(w=>WEEKS[w].qs.forEach((_,i)=>items.push({w, i, ns:""})));
+  return items;
+}
+function tally(items){
+  let answered = 0, correct = 0;
+  items.forEach(it=>{
+    const s = stateFor(it.w, it.i, it.ns);
+    if(s.picked !== null){ answered++; if(s.picked === WEEKS[it.w].qs[it.i][2]) correct++; }
+  });
+  return {answered, correct, total: items.length};
+}
+
+function render(){
+  const list = $("list"); list.textContent = "";
+  const mock = isMock(view), all = view === "all";
+  const items = itemsFor(view);
+  let lastWeek = null;
+  items.forEach((it,n)=>{
+    if(all && it.w !== lastWeek){
+      const h = el("h3","", "Week "+it.w);
+      h.style.cssText = "font-family:var(--serif);font-size:1.15rem;margin:28px 0 -4px";
+      list.appendChild(h); lastWeek = it.w;
+    }
+    const meta = mock ? "Question "+(n+1)+" of "+items.length+", from Week "+it.w : "Question "+(it.i+1);
+    list.appendChild(buildCard(it.w, it.i, meta, it.ns).card);
+  });
+
+  $("viewTitle").textContent = all ? "All weeks" : mock ? "Mock test "+view.slice(1) : "Week "+view;
+  const ban = $("banner"); ban.textContent = "";
+  if(mock){
+    if(submitted[view]){
+      const t = tally(items);
+      ban.appendChild(el("div","banner","Submitted. Score: "+t.correct+" of "+t.total+" ("+Math.round(t.correct/t.total*100)+"%). Wrong: "+(t.answered-t.correct)+". Not answered: "+(t.total-t.answered)+". Each question below now shows its answer."));
+    } else {
+      ban.appendChild(el("div","banner","50 questions taken from Weeks 0 to 12. Choose one option per question (you can change it) and press Submit test to see the answers and your score. The two mock tests share no questions, and each keeps the same questions and order every time."));
+    }
+  } else if(!all && WEEKS[Number(view)].banner){
+    ban.appendChild(el("div","banner", WEEKS[Number(view)].banner));
+  }
+
+  const nb = $("nextBtn");
+  const examOpen = mock && !submitted[view];
+  $("submitBtn").hidden = !examOpen;
+  $("submitWrap").hidden = !examOpen;
+  $("resetView").textContent = mock ? (submitted[view] ? "Retake test" : "Clear answers") : "Reset this view";
+  if(all || view === "m2" || view === "12"){ $("nextWrap").hidden = true; }
+  else {
+    $("nextWrap").hidden = false;
+    nb.textContent = view === "m1" ? "Next: Mock test 2" : "Next: Week "+(Number(view)+1);
+  }
+
+  document.querySelectorAll(".chip").forEach(c=>{
+    if(c.dataset.view === view){ c.setAttribute("aria-current","true"); try{ c.scrollIntoView({inline:"center", block:"nearest"}); }catch(e){} }
+    else c.removeAttribute("aria-current");
+  });
+  refresh();
+}
+
+function refresh(){
+  const t = tally(itemsFor(view));
+  const open = isMock(view) && !submitted[view];
+  $("score").innerHTML = open
+    ? "Answered <b>"+t.answered+"</b> of "+t.total+"."
+    : "Answered <b>"+t.answered+"</b> of "+t.total+". Correct <b>"+t.correct+"</b>.";
+  $("fill").style.width = (t.total ? (t.answered/t.total*100) : 0) + "%";
+  const left = t.total - t.answered;
+  $("submitBottom").textContent = "Submit test" + (left ? " ("+left+" unanswered)" : "");
+  document.querySelectorAll(".chip[data-view]").forEach(c=>{
+    const v = c.dataset.view;
+    if(v === "all") return;
+    const st = tally(itemsFor(v));
+    c.classList.toggle("done", isMock(v) ? submitted[v] : st.answered === st.total);
+  });
+}
+
+function go(v, scroll){
+  view = v;
+  try{ if(location.hash !== "#"+v) history.replaceState(null,"","#"+v); }catch(e){ /* blocked in sandboxed previews; the week just isn't kept in the URL */ }
+  render();
+  if(scroll) window.scrollTo({top:0});
+}
+
+/* Build week chips */
+(function(){
+  const box = $("chips");
+  WEEKS.forEach(w=>{
+    const b = el("button","chip","Week "+w.n); b.type = "button"; b.dataset.view = String(w.n);
+    b.addEventListener("click", ()=>go(String(w.n), false));
+    box.appendChild(b);
+  });
+  const all = el("button","chip","All"); all.type = "button"; all.dataset.view = "all";
+  all.addEventListener("click", ()=>go("all", false));
+  box.appendChild(all);
+  [["m1","Mock test 1"],["m2","Mock test 2"]].forEach(([v,label])=>{
+    const m = el("button","chip",label); m.type = "button"; m.dataset.view = v;
+    m.addEventListener("click", ()=>go(v, false));
+    box.appendChild(m);
+  });
+})();
+
+$("resetView").addEventListener("click", ()=>{
+  itemsFor(view).forEach(it=>{ const s = stateFor(it.w, it.i, it.ns); s.picked = null; s.shown = false; });
+  if(isMock(view)) submitted[view] = false;
+  render();
+});
+function submitTest(){
+  if(!isMock(view) || submitted[view]) return;
+  submitted[view] = true;
+  render();
+  window.scrollTo({top:0});
+}
+$("submitBtn").addEventListener("click", submitTest);
+$("submitBottom").addEventListener("click", submitTest);
+$("nextBtn").addEventListener("click", ()=>go(view === "m1" ? "m2" : String(Number(view)+1), true));
+
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  $("themeBtn").setAttribute("aria-pressed", t === "dark" ? "true" : "false");
+  const m = document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute("content", t === "dark" ? "#0F151B" : "#F5F6F8");
+}
+applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+$("themeBtn").addEventListener("click", ()=>{
+  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try{ localStorage.setItem("pol-theme", next); }catch(e){ /* storage blocked: choice lasts for this visit only */ }
+});
+
+const start = (location.hash || "").replace("#","");
+go((start === "all" || isMock(start) || (/^\d+$/.test(start) && Number(start) <= 12)) ? start : "0", false);
+</script>
+</body>
+</html>
