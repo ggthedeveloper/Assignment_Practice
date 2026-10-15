@@ -3,145 +3,972 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#F5F6F8">
+<meta name="theme-color" content="#1B3B6F">
+<title>NPTEL Online Certification Examination - Psychology of Learning</title>
 <script>try{ if(localStorage.getItem("pol-theme") === "dark") document.documentElement.setAttribute("data-theme","dark"); }catch(e){}</script>
-<title>Psychology of Learning – Assignment Quiz & NPTEL Mock Tests (Weeks 0–12)</title>
 <style>
-  :root{
-    --bg:#F5F6F8; --surface:#FFFFFF; --ink:#16202B; --muted:#5B6773; --line:#D9DEE4;
-    --accent:#254E70; --accent-soft:#E8EEF4;
-    --ok:#1E7A4C; --ok-bg:#E7F5EC;
-    --bad:#B3261E; --bad-bg:#FCEBEA;
-    --note-bg:#FFF6DC; --note-line:#C99A1B;
-    --nav-bg:rgba(245,246,248,.96); --hover:#F8FAFC; --on-strong:#FFFFFF;
-    --serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
-    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  :root {
+    --primary: #1B3B6F;
+    --primary-dark: #0f2547;
+    --primary-light: #2b569a;
+    --subbar-bg: #E8EFF7;
+    --subbar-border: #C5D6E8;
+    --body-bg: #EEF2F6;
+    --card-bg: #FFFFFF;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --border-color: #CBD5E1;
+    --border-light: #E2E8F0;
+    
+    /* TCS iON Status Colors */
+    --c-answered: #28A745;
+    --c-answered-hover: #218838;
+    --c-not-answered: #DC3545;
+    --c-not-answered-hover: #C82333;
+    --c-not-visited: #E9ECEF;
+    --c-not-visited-text: #495057;
+    --c-not-visited-border: #CED4DA;
+    --c-marked: #6F42C1;
+    --c-marked-hover: #5A32A3;
+    --c-marked-ans: #6F42C1;
+    --c-active: #0D6EFD;
+    
+    --btn-default-bg: #FFFFFF;
+    --btn-default-border: #94A3B8;
+    --btn-default-text: #334155;
+    --btn-primary-bg: #1B6CA8;
+    --btn-primary-hover: #145382;
+    --btn-submit-bg: #16A34A;
+    --btn-submit-hover: #15803D;
+    
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
-  html[data-theme="dark"]{
-    color-scheme:dark;
-    --bg:#0F151B; --surface:#18212A; --ink:#E6EBF0; --muted:#9AA7B4; --line:#2E3A47;
-    --accent:#7FB0D9; --accent-soft:#1F2D3A;
-    --ok:#5FD39A; --ok-bg:#173226;
-    --bad:#FF8A80; --bad-bg:#3B1E1C;
-    --note-bg:#3A3118; --note-line:#C99A1B;
-    --nav-bg:rgba(15,21,27,.96); --hover:#1E2934; --on-strong:#0F1A24;
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --primary: #0F1E36;
+    --primary-dark: #070E1A;
+    --primary-light: #1E3A66;
+    --subbar-bg: #152238;
+    --subbar-border: #233554;
+    --body-bg: #0B1320;
+    --card-bg: #131E30;
+    --text-main: #F1F5F9;
+    --text-muted: #94A3B8;
+    --border-color: #2D3E59;
+    --border-light: #1E2D42;
+    
+    --c-not-visited: #1E2A3E;
+    --c-not-visited-text: #94A3B8;
+    --c-not-visited-border: #334460;
+    
+    --btn-default-bg: #18263E;
+    --btn-default-border: #334766;
+    --btn-default-text: #E2E8F0;
   }
-  *{box-sizing:border-box}
-  html{scroll-padding-top:120px}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5}
-  button{font:inherit;color:inherit;cursor:pointer}
-  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
-  header.top{background:var(--surface);border-bottom:1px solid var(--line)}
-  .wrap{max-width:760px;margin:0 auto;padding:0 16px}
-  header.top .wrap{padding-top:28px;padding-bottom:20px}
-  h1{font-family:var(--serif);font-weight:700;font-size:clamp(1.7rem,4.5vw,2.3rem);line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
-  .sub{margin:0;color:var(--muted);font-size:.95rem}
-
-  nav.weeks{position:sticky;top:0;z-index:5;background:var(--nav-bg);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-  .navrow{display:flex;align-items:center;gap:8px;padding-top:10px;padding-bottom:10px}
-  .chips{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:2px}
-  .themebtn{flex:0 0 auto;min-height:38px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600;font-size:.9rem}
-  .themebtn:hover{border-color:var(--accent)}
-  .themebtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-strong)}
-  .chip{flex:0 0 auto;min-width:42px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600;font-size:.9rem}
-  .chip:hover{border-color:var(--accent)}
-  .chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-strong)}
-  .chip.done::after{content:" ✓";font-weight:700}
-
-  .bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:18px 0 6px}
-  .bar h2{font-family:var(--serif);font-size:1.35rem;margin:0;flex:1 1 auto}
-  .score{font-size:.92rem;color:var(--muted)}
-  .score b{color:var(--ink)}
-  .track{height:6px;background:var(--line);border-radius:3px;overflow:hidden;width:100%}
-  .fill{height:100%;width:0;background:var(--accent);transition:width .25s ease}
-  .ghost{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:8px;font-size:.88rem}
-  .ghost:hover{border-color:var(--accent);color:var(--accent)}
-
-  .banner{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--note-line);background:var(--note-bg);font-size:.9rem;border-radius:0 6px 6px 0}
-
-  .q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;margin:16px 0}
-  .q .meta{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:4px}
-  .q .text{font-family:var(--serif);font-size:1.12rem;line-height:1.45;margin:0 0 12px}
-  .opts{display:grid;gap:8px}
-  .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
-  .opt .ltr{flex:0 0 26px;height:26px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.85rem;display:grid;place-items:center}
-  .opt .lbl{padding-top:2px}
-  @media (hover:hover){ .opt:not(:disabled):hover{border-color:var(--accent);background:var(--hover)} }
-  .opt:disabled{cursor:default;color:var(--ink)}
-  .opt.correct{border-color:var(--ok);background:var(--ok-bg)}
-  .opt.correct .ltr{background:var(--ok);color:var(--on-strong)}
-  .opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
-  .opt.wrong .ltr{background:var(--bad);color:var(--on-strong)}
-  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
-  .opt.sel .ltr{background:var(--accent);color:var(--on-strong)}
-  .opt.reveal{border-color:var(--ok);border-style:dashed;background:var(--ok-bg)}
-  .opt.reveal .ltr{background:var(--ok);color:var(--on-strong)}
-
-  .actions{display:flex;gap:8px;margin-top:12px}
-  .show{background:var(--accent);color:var(--on-strong);border:1px solid var(--accent);padding:7px 14px;border-radius:8px;font-weight:600;font-size:.9rem}
-  .show:hover{filter:brightness(1.12)}
-  .reset{background:transparent;border:1px solid var(--line);padding:7px 14px;border-radius:8px;font-size:.9rem}
-  .reset:hover{border-color:var(--accent);color:var(--accent)}
-  .result{margin-top:12px;padding:10px 12px;border-radius:8px;background:var(--accent-soft);font-size:.93rem}
-  .result.good{background:var(--ok-bg)}
-  .result.miss{background:var(--bad-bg)}
-  .result .ref{display:block;margin-top:4px;color:var(--muted);font-size:.85rem}
-  [hidden]{display:none!important}
-
-  .next{display:flex;justify-content:flex-end;margin:8px 0 56px}
-  .next .show{padding:9px 18px}
-
-  html{-webkit-text-size-adjust:100%}
-  button{touch-action:manipulation}
-  .opt .lbl{min-width:0;overflow-wrap:anywhere}
-  @media (max-width:640px){
-    html{scroll-padding-top:70px}
-    header.top .wrap{padding-top:18px;padding-bottom:14px}
-    .sub{font-size:.88rem}
-    .chip{min-height:40px}
-    .bar h2{flex-basis:100%}
-    .score{flex:1 1 100%}
-    .bar .ghost,.bar .show{flex:1 1 0;min-height:44px}
-    .q{padding:14px 12px 12px;margin:12px 0}
-    .q .text{font-size:1.05rem}
-    .opt{min-height:48px;padding:10px}
-    .actions .show,.actions .reset{flex:1;min-height:44px}
-    .next .show{width:100%;min-height:48px}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--body-bg);
+    color: var(--text-main);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
-  @media (prefers-reduced-motion:reduce){ .fill{transition:none} }
+  button { font: inherit; cursor: pointer; border: none; outline: none; }
+  :focus-visible { outline: 2px solid var(--c-active); outline-offset: 2px; }
+
+  /* ===== TOP NPTEL / SWAYAM HEADER ===== */
+  .tcs-header {
+    background: var(--primary);
+    color: #FFFFFF;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #D4AF37;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nptel-logo-badge {
+    background: #FFFFFF;
+    color: #1B3B6F;
+    font-weight: 900;
+    font-size: 0.95rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nptel-logo-badge span { color: #D97706; }
+  .header-title-block h1 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .header-title-block p {
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .candidate-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.08);
+    padding: 4px 12px 4px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .candidate-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #E2E8F0;
+    color: #1B3B6F;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    border: 2px solid #FFFFFF;
+  }
+  .candidate-info {
+    font-size: 0.78rem;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .candidate-info b { font-size: 0.86rem; display: block; }
+  .candidate-info span { opacity: 0.85; }
+  .btn-theme-toggle {
+    background: rgba(255,255,255,0.12);
+    color: #FFFFFF;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .btn-theme-toggle:hover { background: rgba(255,255,255,0.2); }
+
+  /* ===== SUBBAR (TEST SELECTOR & TIMER) ===== */
+  .tcs-subbar {
+    background: var(--subbar-bg);
+    border-bottom: 1px solid var(--subbar-border);
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .subbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .select-label {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .test-dropdown {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    min-width: 250px;
+  }
+  .section-tag {
+    background: var(--primary-light);
+    color: #FFFFFF;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .subbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .timer-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: #DC2626;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .timer-box svg { width: 16px; height: 16px; fill: currentColor; }
+  .btn-subbar {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-subbar:hover { border-color: var(--primary-light); color: var(--primary-light); }
+
+  /* ===== MAIN 2-COLUMN CBT LAYOUT ===== */
+  .cbt-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    overflow: hidden;
+  }
+  @media (max-width: 900px) {
+    .cbt-main { grid-template-columns: 1fr; }
+  }
+
+  /* ===== LEFT: QUESTION PANEL ===== */
+  .q-panel {
+    background: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .q-meta-strip {
+    background: var(--body-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .q-meta-strip b { color: var(--text-main); }
+  .q-marks-info span { color: var(--c-answered); font-weight: 700; }
+
+  .q-body {
+    padding: 24px;
+    flex: 1;
+  }
+  .q-num-heading {
+    color: var(--primary-light);
+    font-size: 1.12rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .q-text {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+  .q-options {
+    display: grid;
+    gap: 12px;
+  }
+  .cbt-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+    user-select: none;
+  }
+  .cbt-opt:hover {
+    border-color: var(--primary-light);
+    background: rgba(27, 108, 168, 0.04);
+  }
+  .cbt-opt input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .opt-radio-disc {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    margin-top: 1px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    transition: all 0.15s;
+  }
+  .opt-radio-disc::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--c-active);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.15s ease-in-out;
+  }
+  .cbt-opt.selected {
+    border-color: var(--c-active);
+    background: rgba(13, 110, 253, 0.08);
+  }
+  .cbt-opt.selected .opt-radio-disc {
+    border-color: var(--c-active);
+  }
+  .cbt-opt.selected .opt-radio-disc::after {
+    transform: scale(1);
+  }
+  .opt-num {
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 20px;
+  }
+  .opt-text {
+    flex: 1;
+    font-size: 0.98rem;
+    color: var(--text-main);
+  }
+
+  /* Review mode option highlights */
+  .cbt-opt.review-correct {
+    border-color: var(--c-answered) !important;
+    background: rgba(40, 167, 69, 0.12) !important;
+  }
+  .cbt-opt.review-correct .opt-radio-disc {
+    border-color: var(--c-answered) !important;
+  }
+  .cbt-opt.review-correct .opt-radio-disc::after {
+    background: var(--c-answered) !important;
+    transform: scale(1);
+  }
+  .cbt-opt.review-wrong {
+    border-color: var(--c-not-answered) !important;
+    background: rgba(220, 53, 69, 0.12) !important;
+  }
+  .cbt-opt.review-wrong .opt-radio-disc {
+    border-color: var(--c-not-answered) !important;
+  }
+  .cbt-opt.review-wrong .opt-radio-disc::after {
+    background: var(--c-not-answered) !important;
+    transform: scale(1);
+  }
+
+  /* Solution / Explanation Box */
+  .solution-box {
+    margin-top: 24px;
+    padding: 16px 18px;
+    border-radius: 8px;
+    background: var(--body-bg);
+    border-left: 4px solid var(--primary-light);
+  }
+  .solution-box.good { border-left-color: var(--c-answered); }
+  .solution-box.miss { border-left-color: var(--c-not-answered); }
+  .sol-header {
+    font-weight: 700;
+    font-size: 0.94rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sol-notes {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Bottom Actions Bar */
+  .q-actions-bar {
+    background: var(--subbar-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .actions-left, .actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-tcs {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .btn-tcs:active { transform: scale(0.98); }
+  .btn-default {
+    background: var(--btn-default-bg);
+    border-color: var(--btn-default-border);
+    color: var(--btn-default-text);
+  }
+  .btn-default:hover { border-color: var(--primary-light); color: var(--primary-light); }
+  .btn-warning {
+    background: #FFFFFF;
+    border-color: #8B5CF6;
+    color: #6D28D9;
+  }
+  .btn-warning:hover { background: #F5F3FF; }
+  .btn-primary {
+    background: var(--btn-primary-bg);
+    color: #FFFFFF;
+  }
+  .btn-primary:hover { background: var(--btn-primary-hover); }
+  .btn-submit {
+    background: var(--btn-submit-bg);
+    color: #FFFFFF;
+    font-weight: 700;
+    width: 100%;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(22, 163, 74, 0.25);
+  }
+  .btn-submit:hover { background: var(--btn-submit-hover); }
+  .btn-retake {
+    background: var(--primary-light);
+    color: #FFFFFF;
+    font-weight: 700;
+    width: 100%;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+  }
+  .btn-retake:hover { background: var(--primary); }
+
+  /* ===== RIGHT: QUESTION PALETTE ===== */
+  .palette-panel {
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .palette-candidate-box {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--body-bg);
+  }
+  .candidate-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #FFFFFF;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .palette-candidate-details {
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+  .palette-candidate-details b { font-size: 0.9rem; color: var(--text-main); display: block; }
+  .palette-candidate-details span { color: var(--text-muted); }
+
+  /* TCS iON Status Legend */
+  .palette-legend {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge-shape {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    color: #FFFFFF;
+  }
+  .shape-answered {
+    background: var(--c-answered);
+    clip-path: polygon(18% 0%, 82% 0%, 100% 100%, 0% 100%);
+  }
+  .shape-not-answered {
+    background: var(--c-not-answered);
+    clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
+  }
+  .shape-not-visited {
+    background: var(--c-not-visited);
+    color: var(--c-not-visited-text);
+    border: 1px solid var(--c-not-visited-border);
+    border-radius: 4px;
+  }
+  .shape-marked {
+    background: var(--c-marked);
+    border-radius: 50%;
+  }
+  .shape-marked-ans {
+    background: var(--c-marked-ans);
+    border-radius: 50%;
+    position: relative;
+  }
+  .shape-marked-ans::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    background: var(--c-answered);
+    border-radius: 50%;
+    border: 1.5px solid #FFFFFF;
+  }
+
+  .palette-section-header {
+    background: var(--subbar-bg);
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .palette-grid-wrapper {
+    padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .palette-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.1s;
+    user-select: none;
+    position: relative;
+  }
+  .palette-btn:hover { filter: brightness(1.1); transform: scale(1.05); }
+  .palette-btn.active-q {
+    outline: 2px solid var(--c-active);
+    outline-offset: 2px;
+    z-index: 2;
+  }
+
+  /* Review Mode Palette Styles */
+  .palette-btn.rev-correct {
+    background: var(--c-answered) !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    clip-path: none !important;
+  }
+  .palette-btn.rev-wrong {
+    background: var(--c-not-answered) !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    clip-path: none !important;
+  }
+  .palette-btn.rev-skipped {
+    background: var(--c-not-visited) !important;
+    color: var(--c-not-visited-text) !important;
+    border: 1px solid var(--c-not-visited-border) !important;
+    border-radius: 4px !important;
+    clip-path: none !important;
+  }
+
+  .palette-footer {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--body-bg);
+    display: grid;
+    gap: 10px;
+  }
+
+  /* Scorecard in Review Mode */
+  .scorecard-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .score-badge {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--primary-light);
+    margin: 4px 0;
+  }
+  .score-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  /* ===== MODAL DIALOGS ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+    padding: 16px;
+  }
+  .modal-overlay[hidden] { display: none !important; }
+  .modal-box {
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    background: var(--primary);
+    color: #FFFFFF;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .modal-close {
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 1.25rem;
+    line-height: 1;
+    opacity: 0.8;
+  }
+  .modal-close:hover { opacity: 1; }
+  .modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .modal-footer {
+    background: var(--body-bg);
+    padding: 12px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* TCS Summary Table in Submit Modal */
+  .tcs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.84rem;
+  }
+  .tcs-table th, .tcs-table td {
+    border: 1px solid var(--border-color);
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .tcs-table th {
+    background: var(--subbar-bg);
+    font-weight: 700;
+  }
+  .tcs-table td:first-child, .tcs-table th:first-child { text-align: left; }
+
+  /* Mobile floating palette button */
+  .mobile-palette-toggle {
+    display: none;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background: var(--primary);
+    color: #FFFFFF;
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 90;
+  }
+  @media (max-width: 900px) {
+    .mobile-palette-toggle { display: block; }
+    .palette-panel {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 320px;
+      z-index: 105;
+      box-shadow: -4px 0 15px rgba(0,0,0,0.25);
+      transform: translateX(100%);
+      transition: transform 0.25s ease-in-out;
+    }
+    .palette-panel.open { transform: translateX(0); }
+  }
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <h1>Psychology of Learning</h1>
-    <p class="sub">NPTEL assignment questions (Weeks 0–12, 130 questions) with practice mode & 4 assignment mock tests (50 questions · 2 marks each · 100 marks total), plus 5 official NPTEL mock tests (30 questions each with answer keys). Pick an option to check it, or take the timed tests.</p>
+<!-- ===== NPTEL TOP BAR ===== -->
+<header class="tcs-header">
+  <div class="header-left">
+    <div class="nptel-logo-badge">
+      <span>NPTEL</span> CBT
+    </div>
+    <div class="header-title-block">
+      <h1>Psychology of Learning (noc23_hs85)</h1>
+      <p>National Programme on Technology Enhanced Learning • IIT Kharagpur</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="candidate-card">
+      <div class="candidate-avatar">GG</div>
+      <div class="candidate-info">
+        <b>Gaurav Gautam</b>
+        <span>Roll: NPTEL26HS85S1 · Sys: C-042</span>
+      </div>
+    </div>
+    <button class="btn-theme-toggle" id="themeBtn" type="button" aria-pressed="false">&#9790; Dark</button>
   </div>
 </header>
 
-<nav class="weeks" aria-label="Choose a week">
-  <div class="wrap navrow">
-    <div class="chips" id="chips"></div>
-    <button class="themebtn" id="themeBtn" type="button" aria-pressed="false" aria-label="Dark mode">&#9790;&#xFE0E; Dark</button>
+<!-- ===== SUBBAR: TEST SELECTION & CONTROLS ===== -->
+<section class="tcs-subbar">
+  <div class="subbar-left">
+    <label class="select-label" for="testSelect">Select Paper / Test:</label>
+    <select id="testSelect" class="test-dropdown" aria-label="Select Paper or Test"></select>
+    <span class="section-tag">Psychology of Learning</span>
   </div>
-</nav>
+  <div class="subbar-right">
+    <div class="timer-box" id="timerBox">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+      <span id="timerText">02:59:59</span>
+    </div>
+    <button class="btn-subbar" id="btnQuestionPaper" type="button">📋 Question Paper</button>
+    <button class="btn-subbar" id="btnInstructions" type="button">ℹ️ Instructions</button>
+  </div>
+</section>
 
-<main class="wrap" id="main" tabindex="-1">
-  <div class="bar">
-    <h2 id="viewTitle"></h2>
-    <span class="score" id="score" aria-live="polite"></span>
-    <button class="ghost" id="resetView" type="button">Reset this view</button>
-    <button class="ghost" id="clearAllBtn" type="button" title="Reset all answers and test scores">Reset all</button>
-    <button class="show" id="submitBtn" type="button" hidden>Submit test</button>
-    <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
-  </div>
-  <div id="banner"></div>
-  <div id="list"></div>
-  <div class="next" id="submitWrap" hidden><button class="show" id="submitBottom" type="button">Submit test</button></div>
-  <div class="next" id="nextWrap"><button class="show" id="nextBtn" type="button"></button></div>
+<!-- ===== MAIN CBT SPLIT AREA ===== -->
+<main class="cbt-main">
+  <!-- LEFT: QUESTION PANEL -->
+  <section class="q-panel" id="qPanel">
+    <div class="q-meta-strip">
+      <span id="qTypeLabel">Question Type: Multiple Choice Question (MCQ)</span>
+      <div class="q-marks-info" id="qMarksInfo">Marks for correct answer: <span>2</span> | Negative Marks: 0</div>
+    </div>
+    <div class="q-body">
+      <div class="q-num-heading">
+        <span id="qNumberText">Question No. 1</span>
+        <span id="qStatusPill" style="font-size:0.75rem; font-weight:700;"></span>
+      </div>
+      <div class="q-text" id="qText">Loading question...</div>
+      <div class="q-options" id="qOptionsGroup" role="radiogroup"></div>
+      
+      <!-- Review / Solution Box (Shown after Submit) -->
+      <div class="solution-box" id="solutionBox" hidden>
+        <div class="sol-header" id="solHeader">Solution & Evaluation</div>
+        <div id="solAnswer"></div>
+        <div class="sol-notes" id="solNotes"></div>
+      </div>
+    </div>
+    
+    <!-- Action buttons bar -->
+    <footer class="q-actions-bar">
+      <div class="actions-left">
+        <button class="btn-tcs btn-warning" id="btnMarkReview" type="button">Mark for Review & Next</button>
+        <button class="btn-tcs btn-default" id="btnClearResponse" type="button">Clear Response</button>
+      </div>
+      <div class="actions-right">
+        <button class="btn-tcs btn-default" id="btnPrev" type="button">&lt;&lt; Previous</button>
+        <button class="btn-tcs btn-primary" id="btnSaveNext" type="button">Save & Next &gt;&gt;</button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- RIGHT: QUESTION PALETTE SIDEBAR -->
+  <aside class="palette-panel" id="palettePanel">
+    <div class="palette-candidate-box">
+      <div class="candidate-thumb">GG</div>
+      <div class="palette-candidate-details">
+        <b>Gaurav Gautam</b>
+        <span>Paper: Psychology of Learning</span>
+      </div>
+    </div>
+
+    <!-- TCS Status Legend -->
+    <div class="palette-legend" id="paletteLegend">
+      <div class="legend-item"><span class="badge-shape shape-answered" id="legAnsweredCount">0</span> Answered</div>
+      <div class="legend-item"><span class="badge-shape shape-not-answered" id="legNotAnsweredCount">0</span> Not Answered</div>
+      <div class="legend-item"><span class="badge-shape shape-not-visited" id="legNotVisitedCount">0</span> Not Visited</div>
+      <div class="legend-item"><span class="badge-shape shape-marked" id="legMarkedCount">0</span> Marked for Review</div>
+      <div class="legend-item" style="grid-column: span 2;"><span class="badge-shape shape-marked-ans" id="legMarkedAnsCount">0</span> Answered & Marked for Review</div>
+    </div>
+
+    <div class="palette-section-header">Choose a Question:</div>
+    <div class="palette-grid-wrapper">
+      <div class="palette-grid" id="paletteGrid"></div>
+    </div>
+
+    <div class="palette-footer">
+      <div class="scorecard-box" id="scorecardBox" hidden>
+        <div class="score-sub">EXAM COMPLETED</div>
+        <div class="score-badge" id="scoreBadge">0 / 100</div>
+        <div class="score-sub" id="scoreSubText">Accuracy: 0%</div>
+      </div>
+      <button class="btn-tcs btn-submit" id="btnOpenSubmitModal" type="button">Submit Exam</button>
+      <button class="btn-tcs btn-retake" id="btnRetakeExam" type="button" hidden>🔄 Retake Exam</button>
+      <button class="btn-tcs btn-default" id="btnResetAll" type="button" style="font-size:0.78rem;">Reset All Progress</button>
+    </div>
+  </aside>
 </main>
+
+<button class="mobile-palette-toggle" id="mobilePaletteToggle" type="button">📋 Question Palette</button>
+
+<!-- ===== MODAL 1: SUBMIT CONFIRMATION ===== -->
+<div class="modal-overlay" id="modalSubmit" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <span>Exam Summary</span>
+      <button class="modal-close" id="btnCloseSubmitModal" type="button">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Please review your test status before final submission:</p>
+      <table class="tcs-table">
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>Total</th>
+            <th>Answered</th>
+            <th>Not Answered</th>
+            <th>Marked</th>
+            <th>Ans & Marked</th>
+            <th>Not Visited</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Psychology of Learning</td>
+            <td id="tblTotal">50</td>
+            <td id="tblAnswered">0</td>
+            <td id="tblNotAnswered">0</td>
+            <td id="tblMarked">0</td>
+            <td id="tblMarkedAns">0</td>
+            <td id="tblNotVisited">0</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.86rem; color:var(--text-muted); margin-top:10px;">
+        ⚠️ <b>Note:</b> Once you click "Confirm & Submit", your answers will be locked, your score will be computed, and full explanations with lecture references will be unlocked.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-tcs btn-default" id="btnCancelSubmit" type="button">Return to Exam</button>
+      <button class="btn-tcs btn-submit" id="btnConfirmSubmit" type="button" style="width:auto;">Confirm & Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL 2: QUESTION PAPER ===== -->
+<div class="modal-overlay" id="modalQuestionPaper" hidden>
+  <div class="modal-box" style="max-width:760px;">
+    <div class="modal-header">
+      <span>Question Paper Preview</span>
+      <button class="modal-close" id="btnCloseQP" type="button">&times;</button>
+    </div>
+    <div class="modal-body" id="qpBody"></div>
+    <div class="modal-footer">
+      <button class="btn-tcs btn-default" id="btnCloseQP2" type="button">Close Preview</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL 3: INSTRUCTIONS ===== -->
+<div class="modal-overlay" id="modalInstructions" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <span>NPTEL Examination Instructions</span>
+      <button class="modal-close" id="btnCloseInst" type="button">&times;</button>
+    </div>
+    <div class="modal-body">
+      <h4 style="margin-bottom:8px;">General Guidelines:</h4>
+      <ol style="padding-left:18px; margin-bottom:14px; display:grid; gap:6px;">
+        <li>Total duration of the examination is indicated by the countdown timer on the top right.</li>
+        <li>The clock will be set at the server. The countdown timer displays remaining time.</li>
+        <li>The Question Palette displayed on the right shows the status of each question using the official TCS iON colors:</li>
+      </ol>
+      <div style="display:grid; gap:8px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:8px;"><span class="badge-shape shape-not-visited">1</span> <b>Not Visited:</b> You have not visited the question yet.</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span class="badge-shape shape-not-answered">2</span> <b>Not Answered:</b> You have visited the question but not answered it.</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span class="badge-shape shape-answered">3</span> <b>Answered:</b> You have answered the question.</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span class="badge-shape shape-marked">4</span> <b>Marked for Review:</b> You have marked the question to review later without answering.</div>
+        <div style="display:flex; align-items:center; gap:8px;"><span class="badge-shape shape-marked-ans">5</span> <b>Answered & Marked for Review:</b> The question will be evaluated for final marks.</div>
+      </div>
+      <h4>Answering a Question:</h4>
+      <p style="margin-top:6px;">Click on any option disc to select your answer. Click <b>Save & Next</b> to save your answer and move forward, or <b>Clear Response</b> to unselect.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-tcs btn-default" id="btnCloseInst2" type="button">Close</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* Each question: [text, options, correctIndex, slideRef, note] */
@@ -2157,391 +2984,497 @@ const NPTEL_TESTS = {
 ],
 };
 
-/* ---------- App ---------- */
-const LETTERS = "ABCDEFG";
-const state = {};            // key "w-i" -> {picked, shown}
+
+/* ---------- App Logic: Real NPTEL / SWAYAM CBT Assessment Engine ---------- */
+const LETTERS = "ABCD";
+const STORAGE_KEY_STATE = "nptel-cbt-state";
+const STORAGE_KEY_SUBMITTED = "nptel-cbt-submitted";
+const STORAGE_KEY_VIEW = "nptel-cbt-view";
+const STORAGE_KEY_INDEX = "nptel-cbt-cur-idx";
+const STORAGE_KEY_TIMER = "nptel-cbt-timer";
+
+/* State maps: testId -> { [qIdx]: { picked: null|number, status: 'not-visited'|'not-answered'|'answered'|'marked'|'marked-answered' } } */
+let state = {};
+let submitted = {};
+let curView = "m1";
+let curIdx = 0;
+let timerSeconds = 180 * 60; // 3 hours
+
 const isAssignMock = v => /^m[1-4]$/.test(v);
 const isNptelMock = v => /^nm[1-5]$/.test(v);
 const isMock = v => isAssignMock(v) || isNptelMock(v);
-const submitted = {
-  m1: false, m2: false, m3: false, m4: false,
-  nm1: false, nm2: false, nm3: false, nm4: false, nm5: false
-};
-let view = "0";              // "0".."12", "all", "m1".."m4", "nm1".."nm5"
-let cards = [];              // current view's card controllers
-
-const STORAGE_KEY_STATE = "pol-quiz-state";
-const STORAGE_KEY_SUBMITTED = "pol-quiz-submitted";
-const STORAGE_KEY_VIEW = "pol-last-view";
 
 function loadActivity(){
   try {
     const rawState = localStorage.getItem(STORAGE_KEY_STATE);
-    if(rawState){
-      const parsed = JSON.parse(rawState);
-      Object.assign(state, parsed);
-    }
+    if(rawState) state = JSON.parse(rawState);
     const rawSubmitted = localStorage.getItem(STORAGE_KEY_SUBMITTED);
-    if(rawSubmitted){
-      const parsed = JSON.parse(rawSubmitted);
-      Object.assign(submitted, parsed);
-    }
-  } catch(e) {
-    // localStorage might be restricted
-  }
+    if(rawSubmitted) submitted = JSON.parse(rawSubmitted);
+    const rawTimer = localStorage.getItem(STORAGE_KEY_TIMER);
+    if(rawTimer) timerSeconds = Math.max(0, parseInt(rawTimer, 10));
+  } catch(e){}
 }
 
 function saveActivity(){
   try {
     localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(state));
     localStorage.setItem(STORAGE_KEY_SUBMITTED, JSON.stringify(submitted));
-  } catch(e) {
-    // quota exceeded or blocked
-  }
+    localStorage.setItem(STORAGE_KEY_VIEW, curView);
+    localStorage.setItem(STORAGE_KEY_INDEX, String(curIdx));
+    localStorage.setItem(STORAGE_KEY_TIMER, String(timerSeconds));
+  } catch(e){}
 }
 
-const $ = id => document.getElementById(id);
-function el(tag, cls, text){ const e = document.createElement(tag); if(cls) e.className = cls; if(text !== undefined) e.textContent = text; return e; }
-function stateFor(w,i,ns){ const k = (ns||"")+w+"-"+i; return state[k] || (state[k] = {picked:null, shown:false}); }
-function isLocked(s){ return s.picked !== null || s.shown; }
-
-function weekStats(w){
-  let answered = 0, correct = 0;
-  WEEKS[w].qs.forEach((q,i)=>{ const s = stateFor(w,i); if(s.picked !== null){ answered++; if(s.picked === q[2]) correct++; } });
-  return {answered, correct, total: WEEKS[w].qs.length};
-}
-
-function buildCard(wOrIt, i, metaText, ns){
-  let w, it;
-  if(typeof wOrIt === "object"){
-    it = wOrIt;
-    w = it.w;
-    i = it.i;
-    ns = it.ns;
-  } else {
-    w = wOrIt;
-    it = { w, i, ns, q: WEEKS[w]?.qs[i] };
-  }
-  const q = it.q || WEEKS[w].qs[i];
-  const [text, opts, ans, slide, extra] = q;
-  const s = stateFor(w, i, ns);
-  const examKey = ns ? ns.slice(0,-1) : null;   // "m1".."m4" or "nm1".."nm5"
-
-  const card = el("article","q");
-  card.id = (ns||"").replace(":","-")+(it.nptel || ("w"+w))+"q"+(i+1);
-  card.appendChild(el("div","meta", metaText));
-  card.appendChild(el("p","text", text));
-
-  const list = el("div","opts");
-  list.setAttribute("role","group");
-  list.setAttribute("aria-label","Answer options");
-  const btns = opts.map((o,k)=>{
-    const b = el("button","opt"); b.type = "button";
-    b.appendChild(el("span","ltr", LETTERS[k]));
-    b.appendChild(el("span","lbl", o));
-    b.addEventListener("click", ()=>{
-      if(examKey){ if(submitted[examKey]) return; s.picked = k; saveActivity(); paint(); refresh(); return; }   // mock: change freely until submit
-      if(isLocked(s)) return; s.picked = k; saveActivity(); paint(); refresh();
-    });
-    list.appendChild(b); return b;
-  });
-  card.appendChild(list);
-
-  const actions = el("div","actions");
-  const showBtn = el("button","show","Show answer"); showBtn.type = "button";
-  const resetBtn = el("button","reset","Try again"); resetBtn.type = "button";
-  actions.append(showBtn, resetBtn);
-  card.appendChild(actions);
-
-  const result = el("div","result"); result.setAttribute("aria-live","polite");
-  card.appendChild(result);
-
-  showBtn.addEventListener("click", ()=>{ if(isLocked(s)) return; s.shown = true; saveActivity(); paint(); refresh(); resetBtn.focus(); });
-  resetBtn.addEventListener("click", ()=>{ s.picked = null; s.shown = false; saveActivity(); paint(); refresh(); showBtn.focus(); });
-
-  function paint(){
-    const locked = examKey ? submitted[examKey] : isLocked(s);
-    btns.forEach((b,k)=>{
-      b.disabled = locked;
-      b.classList.remove("correct","wrong","reveal","sel");
-      if(examKey && !locked){
-        if(k === s.picked) b.classList.add("sel");            // taking the test: no right/wrong hints
-      } else if(s.picked !== null){
-        if(k === ans) b.classList.add("correct");
-        else if(k === s.picked) b.classList.add("wrong");
-      } else if((s.shown || examKey) && k === ans){
-        b.classList.add("reveal");
-      }
-    });
-    showBtn.hidden = locked || !!examKey;
-    resetBtn.hidden = examKey ? true : !locked;
-    actions.hidden = showBtn.hidden && resetBtn.hidden;
-    result.hidden = !locked;
-    result.className = "result";
-    if(!locked) return;
-    result.textContent = "";
-    const correctText = LETTERS[ans]+". "+opts[ans];
-    const line = el("div");
-    if(s.picked !== null){
-      if(s.picked === ans){
-        result.classList.add("good");
-        line.textContent = isAssignMock(examKey) ? ("Correct (+2 marks). " + correctText) : ("Correct. " + correctText);
-      } else {
-        result.classList.add("miss");
-        line.textContent = isAssignMock(examKey) ? ("Not quite (0 / 2 marks). Correct answer: " + correctText) : ("Not quite. Correct answer: " + correctText);
-      }
-    } else {
-      line.textContent = isAssignMock(examKey)
-        ? ("Not answered (0 / 2 marks). Correct answer: " + correctText)
-        : ((examKey ? "Not answered. Correct answer: " : "Answer: ") + correctText);
-    }
-    result.appendChild(line);
-    const notes = [];
-    if(slide){
-      notes.push(isAssignMock(examKey) ? ("Lecture notes, slide "+slide+".") : ("Lecture notes, Week "+w+", slide "+slide+"."));
-    }
-    if(extra) notes.push(extra);
-    if(notes.length){ const r = el("span","ref", notes.join(" ")); result.appendChild(r); }
-  }
-  paint();
-  return {card, reset(){ s.picked = null; s.shown = false; saveActivity(); paint(); }};
-}
-
-/* Everything shown in a given view, as {w, i, ns, q, nptel} */
-function itemsFor(v){
-  if(!v) return [];
-  if(isNptelMock(v)) return (NPTEL_TESTS[v] || []).map((q, i)=>({w: v, i, ns: v+":", q, nptel: v}));
+/* Question list for current view */
+function getQuestions(v){
+  if(isNptelMock(v)) return NPTEL_TESTS[v] || [];
   if(isAssignMock(v)){
-    const idx = Number(v.slice(1)) - 1; // "m1"->0, "m2"->1, "m3"->2, "m4"->3
-    return (MOCKS[idx] || []).map(([w,i])=>({w, i, ns: v+":"}));
+    const idx = Number(v.slice(1)) - 1;
+    return (MOCKS[idx] || []).map(([w, i]) => WEEKS[w].qs[i]);
   }
-  const weeks = v === "all" ? WEEKS.map(x=>x.n) : [Number(v)];
-  const items = [];
-  weeks.forEach(w=>{
-    if(WEEKS[w] && WEEKS[w].qs) WEEKS[w].qs.forEach((_,i)=>items.push({w, i, ns:""}));
-  });
-  return items;
-}
-function tally(items){
-  let answered = 0, correct = 0;
-  items.forEach(it=>{
-    const q = it.q || WEEKS[it.w].qs[it.i];
-    const s = stateFor(it.w, it.i, it.ns);
-    if(s.picked !== null){ answered++; if(s.picked === q[2]) correct++; }
-  });
-  return {answered, correct, total: items.length};
-}
-
-function render(){
-  const list = $("list"); list.textContent = "";
-  const mock = isMock(view), all = view === "all", nptel = isNptelMock(view);
-  const items = itemsFor(view);
-  let lastWeek = null;
-  items.forEach((it,n)=>{
-    if(all && it.w !== lastWeek){
-      const h = el("h3","", "Week "+it.w);
-      h.style.cssText = "font-family:var(--serif);font-size:1.15rem;margin:28px 0 -4px";
-      list.appendChild(h); lastWeek = it.w;
-    }
-    let meta = "Question "+(it.i+1);
-    if(nptel){
-      meta = "Question "+(n+1)+" of "+items.length;
-      if(it.q && it.q[4]){
-        const diffMatch = it.q[4].match(/Difficulty:\s*(\w+)/i);
-        if(diffMatch) meta += " · " + diffMatch[1];
-      }
-    } else if(isAssignMock(view)){
-      // Do NOT mention the question from which week!
-      meta = "Question "+(n+1)+" of "+items.length+" · 2 marks";
-    }
-    list.appendChild(buildCard(it, it.i, meta, it.ns).card);
-  });
-
-  let title = "Week " + view;
-  if(all) title = "All weeks";
-  else if(nptel) title = "NPTEL Mock Test " + view.slice(2) + " (Course ID: noc23_hs85)";
-  else if(isAssignMock(view)) title = "Assignment Mock Test " + view.slice(1) + " (100 Marks)";
-  $("viewTitle").textContent = title;
-
-  const ban = $("banner"); ban.textContent = "";
-  if(nptel){
-    const num = view.slice(2);
-    if(submitted[view]){
-      const t = tally(items);
-      ban.appendChild(el("div","banner","Submitted. Score: "+t.correct+" of "+t.total+" ("+Math.round(t.correct/t.total*100)+"%). Wrong: "+(t.answered-t.correct)+". Not answered: "+(t.total-t.answered)+". Official answer keys and lecture sources are shown below."));
-    } else {
-      ban.appendChild(el("div","banner","Official NPTEL Mock Exam "+num+" ("+items.length+" questions). Choose one option per question (you can change it before submitting) and press Submit test to check your score and view the official answer key."));
-    }
-  } else if(isAssignMock(view)){
-    const num = view.slice(1);
-    const items = itemsFor(view);
-    if(submitted[view]){
-      const t = tally(items);
-      const marks = t.correct * 2;
-      const totalMarks = t.total * 2;
-      ban.appendChild(el("div","banner","Submitted! Final Score: "+marks+" / "+totalMarks+" marks ("+Math.round(marks/totalMarks*100)+"%). Correct: "+t.correct+" ("+marks+" marks). Wrong: "+(t.answered-t.correct)+" (0 marks). Unanswered: "+(t.total-t.answered)+". Detailed solutions are shown below."));
-    } else {
-      ban.appendChild(el("div","banner","Assignment Mock Test "+num+" (50 questions · 2 marks each · 100 marks total) drawn from Weeks 1 to 12. Select one option per question (you can change it anytime before submission). Press Submit test to calculate your score out of 100 marks."));
-    }
-  } else if(!all && WEEKS[Number(view)].banner){
-    ban.appendChild(el("div","banner", WEEKS[Number(view)].banner));
+  if(v === "all"){
+    const list = [];
+    WEEKS.forEach(w => w.qs.forEach(q => list.push(q)));
+    return list;
   }
+  const w = Number(v);
+  return (WEEKS[w] && WEEKS[w].qs) ? WEEKS[w].qs : [];
+}
 
-  const nb = $("nextBtn");
-  const examOpen = mock && !submitted[view];
-  $("submitBtn").hidden = !examOpen;
-  $("submitWrap").hidden = !examOpen;
-  $("resetView").textContent = mock ? (submitted[view] ? "Retake test" : "Clear answers") : "Reset this view";
+function getQState(v, idx){
+  if(!state[v]) state[v] = {};
+  if(!state[v][idx]) state[v][idx] = { picked: null, status: "not-visited" };
+  return state[v][idx];
+}
 
-  if(all || view === "nm5"){
-    $("nextWrap").hidden = true;
-  } else {
-    $("nextWrap").hidden = false;
-    if(view === "12") nb.textContent = "Next: Mock test 1";
-    else if(view === "m1") nb.textContent = "Next: Mock test 2";
-    else if(view === "m2") nb.textContent = "Next: Mock test 3";
-    else if(view === "m3") nb.textContent = "Next: Mock test 4";
-    else if(view === "m4") nb.textContent = "Next: NPTEL Mock Test 1";
-    else if(view === "nm1") nb.textContent = "Next: NPTEL Mock Test 2";
-    else if(view === "nm2") nb.textContent = "Next: NPTEL Mock Test 3";
-    else if(view === "nm3") nb.textContent = "Next: NPTEL Mock Test 4";
-    else if(view === "nm4") nb.textContent = "Next: NPTEL Mock Test 5";
-    else nb.textContent = "Next: Week "+(Number(view)+1);
-  }
+/* Get marks per question */
+function getMarksPerQ(v){
+  return isAssignMock(v) ? 2 : 1;
+}
 
-  document.querySelectorAll(".chip").forEach(c=>{
-    if(c.dataset.view === view){ c.setAttribute("aria-current","true"); try{ c.scrollIntoView({inline:"center", block:"nearest"}); }catch(e){} }
-    else c.removeAttribute("aria-current");
+/* Format seconds as HH:MM:SS */
+function formatTime(sec){
+  const h = String(Math.floor(sec / 3600)).padStart(2, "0");
+  const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
+  const s = String(sec % 60).padStart(2, "0");
+  return `${h}:${m}:${s}`;
+}
+
+/* Build Test Dropdown */
+function buildDropdown(){
+  const sel = document.getElementById("testSelect");
+  sel.innerHTML = "";
+  
+  const g1 = document.createElement("optgroup");
+  g1.label = "Assignment Mock Tests (50 Qs · 100 Marks)";
+  [["m1","Mock Test 1 (100 Marks)"],["m2","Mock Test 2 (100 Marks)"],["m3","Mock Test 3 (100 Marks)"],["m4","Mock Test 4 (100 Marks)"]].forEach(([k, label])=>{
+    const opt = document.createElement("option"); opt.value = k; opt.textContent = label; g1.appendChild(opt);
   });
-  refresh();
-}
+  sel.appendChild(g1);
 
-function refresh(){
-  const t = tally(itemsFor(view));
-  const open = isMock(view) && !submitted[view];
-  if(isAssignMock(view)){
-    const marks = t.correct * 2;
-    const totalMarks = t.total * 2;
-    $("score").innerHTML = open
-      ? "Answered <b>"+t.answered+"</b> of "+t.total+" (50 questions · 2 marks each · 100 marks)."
-      : "Answered <b>"+t.answered+"</b> of "+t.total+". Score: <b>"+marks+" / "+totalMarks+" marks</b> ("+Math.round(marks/totalMarks*100)+"%).";
-  } else {
-    $("score").innerHTML = open
-      ? "Answered <b>"+t.answered+"</b> of "+t.total+"."
-      : "Answered <b>"+t.answered+"</b> of "+t.total+". Correct <b>"+t.correct+"</b>.";
-  }
-  $("fill").style.width = (t.total ? (t.answered/t.total*100) : 0) + "%";
-  const left = t.total - t.answered;
-  $("submitBottom").textContent = "Submit test" + (left ? " ("+left+" unanswered)" : "");
-  document.querySelectorAll(".chip[data-view]").forEach(c=>{
-    const v = c.dataset.view;
-    if(!v || v === "all") return;
-    const st = tally(itemsFor(v));
-    c.classList.toggle("done", isMock(v) ? submitted[v] : st.answered === st.total);
+  const g2 = document.createElement("optgroup");
+  g2.label = "Official NPTEL Mock Tests (30 Qs)";
+  [["nm1","NPTEL Mock Test 1"],["nm2","NPTEL Mock Test 2"],["nm3","NPTEL Mock Test 3"],["nm4","NPTEL Mock Test 4"],["nm5","NPTEL Mock Test 5"]].forEach(([k, label])=>{
+    const opt = document.createElement("option"); opt.value = k; opt.textContent = label; g2.appendChild(opt);
   });
-}
+  sel.appendChild(g2);
 
-function go(v, scroll){
-  view = v;
-  try{ localStorage.setItem(STORAGE_KEY_VIEW, v); }catch(e){}
-  try{ if(location.hash !== "#"+v) history.replaceState(null,"","#"+v); }catch(e){ /* blocked in sandboxed previews; the week just isn't kept in the URL */ }
-  render();
-  if(scroll) window.scrollTo({top:0});
-}
-
-/* Build chips */
-(function(){
-  const box = $("chips");
+  const g3 = document.createElement("optgroup");
+  g3.label = "Weekly Practice Assignments (Weeks 0–12)";
   WEEKS.forEach(w=>{
-    const b = el("button","chip","Week "+w.n); b.type = "button"; b.dataset.view = String(w.n);
-    b.addEventListener("click", ()=>go(String(w.n), false));
-    box.appendChild(b);
+    const opt = document.createElement("option"); opt.value = String(w.n); opt.textContent = "Week " + w.n + " Assignment"; g3.appendChild(opt);
   });
-  const all = el("button","chip","All"); all.type = "button"; all.dataset.view = "all";
-  all.addEventListener("click", ()=>go("all", false));
-  box.appendChild(all);
+  const optAll = document.createElement("option"); optAll.value = "all"; optAll.textContent = "All Weeks (130 Questions)"; g3.appendChild(optAll);
+  sel.appendChild(g3);
 
-  [
-    ["m1","Mock test 1"],
-    ["m2","Mock test 2"],
-    ["m3","Mock test 3"],
-    ["m4","Mock test 4"]
-  ].forEach(([v,label])=>{
-    const m = el("button","chip",label); m.type = "button"; m.dataset.view = v;
-    m.addEventListener("click", ()=>go(v, false));
-    box.appendChild(m);
+  sel.value = curView;
+  sel.addEventListener("change", (e)=>{
+    switchView(e.target.value, 0);
   });
+}
 
-  [
-    ["nm1","NPTEL Mock Test 1"],
-    ["nm2","NPTEL Mock Test 2"],
-    ["nm3","NPTEL Mock Test 3"],
-    ["nm4","NPTEL Mock Test 4"],
-    ["nm5","NPTEL Mock Test 5"]
-  ].forEach(([v,label])=>{
-    const m = el("button","chip",label); m.type = "button"; m.dataset.view = v;
-    m.addEventListener("click", ()=>go(v, false));
-    box.appendChild(m);
-  });
-})();
-
-$("resetView").addEventListener("click", ()=>{
-  itemsFor(view).forEach(it=>{ const s = stateFor(it.w, it.i, it.ns); s.picked = null; s.shown = false; });
-  if(isMock(view)) submitted[view] = false;
+function switchView(newView, targetIdx = 0){
+  curView = newView;
+  curIdx = targetIdx;
+  try{ if(location.hash !== "#"+newView) history.replaceState(null,"","#"+newView); }catch(e){}
   saveActivity();
-  render();
+  renderExam();
+}
+
+/* Render current question & palette */
+function renderExam(){
+  const qs = getQuestions(curView);
+  if(curIdx >= qs.length) curIdx = 0;
+  const isSub = !!submitted[curView];
+  const marksPerQ = getMarksPerQ(curView);
+
+  const selElem = document.getElementById("testSelect");
+  if(selElem && selElem.value !== curView) selElem.value = curView;
+
+  // Mark current question as visited if not visited
+  const curState = getQState(curView, curIdx);
+  if(!isSub && curState.status === "not-visited"){
+    curState.status = "not-answered";
+    saveActivity();
+  }
+
+  // Update question info strip
+  document.getElementById("qMarksInfo").innerHTML = `Marks for correct answer: <span>${marksPerQ}</span> | Negative Marks: 0`;
+  document.getElementById("qNumberText").textContent = `Question No. ${curIdx + 1} of ${qs.length}`;
+
+  const q = qs[curIdx];
+  const [qText, qOpts, qAns, qSlide, qExtra] = q;
+
+  document.getElementById("qText").textContent = qText;
+
+  // Render options
+  const optsContainer = document.getElementById("qOptionsGroup");
+  optsContainer.innerHTML = "";
+
+  qOpts.forEach((optText, oIdx)=>{
+    const label = document.createElement("label");
+    label.className = "cbt-opt";
+    label.dataset.opt = oIdx;
+
+    if(curState.picked === oIdx) label.classList.add("selected");
+
+    if(isSub){
+      if(oIdx === qAns) label.classList.add("review-correct");
+      else if(curState.picked === oIdx) label.classList.add("review-wrong");
+    }
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "cbt_option";
+    radio.value = oIdx;
+    radio.checked = (curState.picked === oIdx);
+    radio.disabled = isSub;
+
+    const disc = document.createElement("span");
+    disc.className = "opt-radio-disc";
+
+    const numSpan = document.createElement("span");
+    numSpan.className = "opt-num";
+    numSpan.textContent = (oIdx + 1) + ".";
+
+    const textSpan = document.createElement("span");
+    textSpan.className = "opt-text";
+    textSpan.textContent = optText;
+
+    label.append(radio, disc, numSpan, textSpan);
+
+    if(!isSub){
+      label.addEventListener("click", ()=>{
+        curState.picked = oIdx;
+        saveActivity();
+        document.querySelectorAll(".cbt-opt").forEach(l => l.classList.remove("selected"));
+        label.classList.add("selected");
+        radio.checked = true;
+      });
+    }
+
+    optsContainer.appendChild(label);
+  });
+
+  // Solution Box in Review Mode
+  const solBox = document.getElementById("solutionBox");
+  if(isSub){
+    solBox.hidden = false;
+    const isCorrect = (curState.picked === qAns);
+    solBox.className = "solution-box " + (isCorrect ? "good" : (curState.picked === null ? "" : "miss"));
+    
+    let head = "";
+    if(curState.picked === null) head = "⚪ Not Attempted (0 Marks)";
+    else if(isCorrect) head = `✅ Correct (+${marksPerQ} Marks)`;
+    else head = `❌ Incorrect (0 Marks)`;
+    
+    document.getElementById("solHeader").textContent = head;
+    document.getElementById("solAnswer").innerHTML = `<b>Correct Answer:</b> Option ${qAns + 1} (${qOpts[qAns]})`;
+    
+    const notes = [];
+    if(qSlide) notes.push(`Lecture notes, slide ${qSlide}.`);
+    if(qExtra) notes.push(qExtra);
+    document.getElementById("solNotes").textContent = notes.join(" ");
+  } else {
+    solBox.hidden = true;
+  }
+
+  // Update Status Pill
+  const pill = document.getElementById("qStatusPill");
+  if(isSub){
+    pill.textContent = (curState.picked === qAns) ? "CORRECT" : (curState.picked === null ? "UNATTEMPTED" : "WRONG");
+    pill.style.color = (curState.picked === qAns) ? "var(--c-answered)" : "var(--c-not-answered)";
+  } else {
+    pill.textContent = "";
+  }
+
+  // Disable / Enable action buttons if submitted
+  document.getElementById("btnMarkReview").disabled = isSub;
+  document.getElementById("btnClearResponse").disabled = isSub;
+  document.getElementById("btnOpenSubmitModal").hidden = isSub;
+  document.getElementById("btnRetakeExam").hidden = !isSub;
+  document.getElementById("scorecardBox").hidden = !isSub;
+
+  renderPalette();
+  updateLegend();
+}
+
+/* Render Palette Grid */
+function renderPalette(){
+  const qs = getQuestions(curView);
+  const grid = document.getElementById("paletteGrid");
+  grid.innerHTML = "";
+  const isSub = !!submitted[curView];
+
+  qs.forEach((q, idx)=>{
+    const st = getQState(curView, idx);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "palette-btn";
+    btn.textContent = idx + 1;
+
+    if(idx === curIdx) btn.classList.add("active-q");
+
+    if(isSub){
+      if(st.picked === q[2]) btn.classList.add("rev-correct");
+      else if(st.picked !== null) btn.classList.add("rev-wrong");
+      else btn.classList.add("rev-skipped");
+    } else {
+      if(st.status === "answered") btn.classList.add("shape-answered");
+      else if(st.status === "not-answered") btn.classList.add("shape-not-answered");
+      else if(st.status === "marked") btn.classList.add("shape-marked");
+      else if(st.status === "marked-answered") btn.classList.add("shape-marked-ans");
+      else btn.classList.add("shape-not-visited");
+    }
+
+    btn.addEventListener("click", ()=>{
+      // If moving away from current question in exam mode and it was not answered
+      if(!isSub){
+        const curSt = getQState(curView, curIdx);
+        if(curSt.picked !== null && curSt.status !== "marked-answered"){
+          curSt.status = "answered";
+        }
+      }
+      curIdx = idx;
+      saveActivity();
+      renderExam();
+    });
+
+    grid.appendChild(btn);
+  });
+}
+
+/* Update Legend Counts */
+function updateLegend(){
+  const qs = getQuestions(curView);
+  let ans = 0, notAns = 0, notVis = 0, marked = 0, markedAns = 0, correct = 0;
+
+  qs.forEach((q, idx)=>{
+    const st = getQState(curView, idx);
+    if(st.picked === q[2]) correct++;
+    if(st.status === "answered") ans++;
+    else if(st.status === "not-answered") notAns++;
+    else if(st.status === "marked") marked++;
+    else if(st.status === "marked-answered") markedAns++;
+    else notVis++;
+  });
+
+  document.getElementById("legAnsweredCount").textContent = ans;
+  document.getElementById("legNotAnsweredCount").textContent = notAns;
+  document.getElementById("legNotVisitedCount").textContent = notVis;
+  document.getElementById("legMarkedCount").textContent = marked;
+  document.getElementById("legMarkedAnsCount").textContent = markedAns;
+
+  // If submitted, show scorecard
+  if(submitted[curView]){
+    const marksPerQ = getMarksPerQ(curView);
+    const totalMarks = qs.length * marksPerQ;
+    const earnedMarks = correct * marksPerQ;
+    const pct = Math.round((earnedMarks / totalMarks) * 100);
+
+    document.getElementById("scoreBadge").textContent = `${earnedMarks} / ${totalMarks}`;
+    document.getElementById("scoreSubText").textContent = `Score: ${pct}% · Correct: ${correct}/${qs.length}`;
+  }
+}
+
+/* Button handlers */
+document.getElementById("btnSaveNext").addEventListener("click", ()=>{
+  const qs = getQuestions(curView);
+  const st = getQState(curView, curIdx);
+  if(st.picked !== null){
+    st.status = "answered";
+  } else {
+    st.status = "not-answered";
+  }
+  if(curIdx < qs.length - 1) curIdx++;
+  saveActivity();
+  renderExam();
 });
 
-$("clearAllBtn").addEventListener("click", ()=>{
-  if(confirm("Are you sure you want to reset all your progress, answers, and mock test scores?")){
-    Object.keys(state).forEach(k => delete state[k]);
-    Object.keys(submitted).forEach(k => submitted[k] = false);
+document.getElementById("btnMarkReview").addEventListener("click", ()=>{
+  const qs = getQuestions(curView);
+  const st = getQState(curView, curIdx);
+  if(st.picked !== null){
+    st.status = "marked-answered";
+  } else {
+    st.status = "marked";
+  }
+  if(curIdx < qs.length - 1) curIdx++;
+  saveActivity();
+  renderExam();
+});
+
+document.getElementById("btnClearResponse").addEventListener("click", ()=>{
+  const st = getQState(curView, curIdx);
+  st.picked = null;
+  st.status = "not-answered";
+  saveActivity();
+  renderExam();
+});
+
+document.getElementById("btnPrev").addEventListener("click", ()=>{
+  if(curIdx > 0){
+    curIdx--;
     saveActivity();
-    render();
+    renderExam();
   }
 });
 
-function submitTest(){
-  if(!isMock(view) || submitted[view]) return;
-  submitted[view] = true;
-  saveActivity();
-  render();
-  window.scrollTo({top:0});
-}
-$("submitBtn").addEventListener("click", submitTest);
-$("submitBottom").addEventListener("click", submitTest);
-$("nextBtn").addEventListener("click", ()=>{
-  let nxt = "0";
-  if(view === "12") nxt = "m1";
-  else if(view === "m1") nxt = "m2";
-  else if(view === "m2") nxt = "m3";
-  else if(view === "m3") nxt = "m4";
-  else if(view === "m4") nxt = "nm1";
-  else if(view === "nm1") nxt = "nm2";
-  else if(view === "nm2") nxt = "nm3";
-  else if(view === "nm3") nxt = "nm4";
-  else if(view === "nm4") nxt = "nm5";
-  else nxt = String(Number(view)+1);
-  go(nxt, true);
+/* Modal Submit */
+document.getElementById("btnOpenSubmitModal").addEventListener("click", ()=>{
+  const qs = getQuestions(curView);
+  let ans = 0, notAns = 0, notVis = 0, marked = 0, markedAns = 0;
+  qs.forEach((_, idx)=>{
+    const st = getQState(curView, idx);
+    if(st.status === "answered") ans++;
+    else if(st.status === "not-answered") notAns++;
+    else if(st.status === "marked") marked++;
+    else if(st.status === "marked-answered") markedAns++;
+    else notVis++;
+  });
+  document.getElementById("tblTotal").textContent = qs.length;
+  document.getElementById("tblAnswered").textContent = ans;
+  document.getElementById("tblNotAnswered").textContent = notAns;
+  document.getElementById("tblMarked").textContent = marked;
+  document.getElementById("tblMarkedAns").textContent = markedAns;
+  document.getElementById("tblNotVisited").textContent = notVis;
+
+  document.getElementById("modalSubmit").hidden = false;
 });
 
+document.getElementById("btnCloseSubmitModal").addEventListener("click", ()=>{ document.getElementById("modalSubmit").hidden = true; });
+document.getElementById("btnCancelSubmit").addEventListener("click", ()=>{ document.getElementById("modalSubmit").hidden = true; });
+
+document.getElementById("btnConfirmSubmit").addEventListener("click", ()=>{
+  document.getElementById("modalSubmit").hidden = true;
+  submitted[curView] = true;
+  curIdx = 0;
+  saveActivity();
+  renderExam();
+});
+
+/* Retake Exam */
+document.getElementById("btnRetakeExam").addEventListener("click", ()=>{
+  if(confirm("Are you sure you want to retake this exam? Your current responses will be reset.")){
+    delete state[curView];
+    delete submitted[curView];
+    curIdx = 0;
+    saveActivity();
+    renderExam();
+  }
+});
+
+/* Reset All Progress */
+document.getElementById("btnResetAll").addEventListener("click", ()=>{
+  if(confirm("Reset all progress across all mock tests and weekly assignments?")){
+    state = {};
+    submitted = {};
+    curIdx = 0;
+    saveActivity();
+    renderExam();
+  }
+});
+
+/* Question Paper Modal */
+document.getElementById("btnQuestionPaper").addEventListener("click", ()=>{
+  const qs = getQuestions(curView);
+  const body = document.getElementById("qpBody");
+  body.innerHTML = "";
+  
+  qs.forEach((q, idx)=>{
+    const div = document.createElement("div");
+    div.style.cssText = "margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border-light);";
+    div.innerHTML = `
+      <div style="font-weight:700; color:var(--primary-light); margin-bottom:6px;">Q${idx + 1}.</div>
+      <div style="font-weight:500; margin-bottom:8px;">${q[0]}</div>
+      <div style="display:grid; gap:4px; padding-left:14px; font-size:0.86rem;">
+        ${q[1].map((opt, oi) => `<div>(${LETTERS[oi]}) ${opt}</div>`).join("")}
+      </div>
+    `;
+    body.appendChild(div);
+  });
+  document.getElementById("modalQuestionPaper").hidden = false;
+});
+document.getElementById("btnCloseQP").addEventListener("click", ()=>{ document.getElementById("modalQuestionPaper").hidden = true; });
+document.getElementById("btnCloseQP2").addEventListener("click", ()=>{ document.getElementById("modalQuestionPaper").hidden = true; });
+
+/* Instructions Modal */
+document.getElementById("btnInstructions").addEventListener("click", ()=>{ document.getElementById("modalInstructions").hidden = false; });
+document.getElementById("btnCloseInst").addEventListener("click", ()=>{ document.getElementById("modalInstructions").hidden = true; });
+document.getElementById("btnCloseInst2").addEventListener("click", ()=>{ document.getElementById("modalInstructions").hidden = true; });
+
+/* Mobile Drawer */
+const mobileToggle = document.getElementById("mobilePaletteToggle");
+const palettePanel = document.getElementById("palettePanel");
+mobileToggle.addEventListener("click", ()=>{
+  palettePanel.classList.toggle("open");
+  mobileToggle.textContent = palettePanel.classList.contains("open") ? "✖ Close Palette" : "📋 Question Palette";
+});
+
+/* Timer Ticking */
+setInterval(()=>{
+  if(timerSeconds > 0){
+    timerSeconds--;
+    document.getElementById("timerText").textContent = formatTime(timerSeconds);
+    if(timerSeconds % 30 === 0) saveActivity();
+  }
+}, 1000);
+
+/* Theme Toggle */
 function applyTheme(t){
   document.documentElement.setAttribute("data-theme", t);
-  $("themeBtn").setAttribute("aria-pressed", t === "dark" ? "true" : "false");
-  const m = document.querySelector('meta[name="theme-color"]');
-  if(m) m.setAttribute("content", t === "dark" ? "#0F151B" : "#F5F6F8");
+  const btn = document.getElementById("themeBtn");
+  btn.textContent = (t === "dark") ? "☀️ Light" : "🌙 Dark";
+  btn.setAttribute("aria-pressed", t === "dark" ? "true" : "false");
 }
 applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
-$("themeBtn").addEventListener("click", ()=>{
+document.getElementById("themeBtn").addEventListener("click", ()=>{
   const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
   applyTheme(next);
-  try{ localStorage.setItem("pol-theme", next); }catch(e){ /* storage blocked: choice lasts for this visit only */ }
+  try{ localStorage.setItem("pol-theme", next); }catch(e){}
 });
 
+/* Init */
 loadActivity();
-const savedView = (() => { try { return localStorage.getItem(STORAGE_KEY_VIEW); } catch(e){ return null; } })();
-const start = (location.hash || "").replace("#","") || savedView || "0";
-go((start === "all" || isMock(start) || (/^\d+$/.test(start) && Number(start) <= 12)) ? start : "0", false);
+const hash = (location.hash || "").replace("#","");
+if(hash) curView = hash;
+else {
+  const savedV = localStorage.getItem(STORAGE_KEY_VIEW);
+  if(savedV) curView = savedV;
+}
+const savedI = localStorage.getItem(STORAGE_KEY_INDEX);
+if(savedI) curIdx = parseInt(savedI, 10) || 0;
+
+buildDropdown();
+renderExam();
+document.getElementById("timerText").textContent = formatTime(timerSeconds);
+
+window.addEventListener("hashchange", ()=>{
+  const h = (location.hash || "").replace("#","");
+  if(h && h !== curView){
+    switchView(h, 0);
+  }
+});
 </script>
 </body>
 </html>
