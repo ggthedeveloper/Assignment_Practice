@@ -133,6 +133,7 @@
     <h2 id="viewTitle"></h2>
     <span class="score" id="score" aria-live="polite"></span>
     <button class="ghost" id="resetView" type="button">Reset this view</button>
+    <button class="ghost" id="clearAllBtn" type="button" title="Reset all answers and test scores">Reset all</button>
     <button class="show" id="submitBtn" type="button" hidden>Submit test</button>
     <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
   </div>
@@ -2169,6 +2170,36 @@ const submitted = {
 let view = "0";              // "0".."12", "all", "m1".."m4", "nm1".."nm5"
 let cards = [];              // current view's card controllers
 
+const STORAGE_KEY_STATE = "pol-quiz-state";
+const STORAGE_KEY_SUBMITTED = "pol-quiz-submitted";
+const STORAGE_KEY_VIEW = "pol-last-view";
+
+function loadActivity(){
+  try {
+    const rawState = localStorage.getItem(STORAGE_KEY_STATE);
+    if(rawState){
+      const parsed = JSON.parse(rawState);
+      Object.assign(state, parsed);
+    }
+    const rawSubmitted = localStorage.getItem(STORAGE_KEY_SUBMITTED);
+    if(rawSubmitted){
+      const parsed = JSON.parse(rawSubmitted);
+      Object.assign(submitted, parsed);
+    }
+  } catch(e) {
+    // localStorage might be restricted
+  }
+}
+
+function saveActivity(){
+  try {
+    localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(state));
+    localStorage.setItem(STORAGE_KEY_SUBMITTED, JSON.stringify(submitted));
+  } catch(e) {
+    // quota exceeded or blocked
+  }
+}
+
 const $ = id => document.getElementById(id);
 function el(tag, cls, text){ const e = document.createElement(tag); if(cls) e.className = cls; if(text !== undefined) e.textContent = text; return e; }
 function stateFor(w,i,ns){ const k = (ns||"")+w+"-"+i; return state[k] || (state[k] = {picked:null, shown:false}); }
@@ -2209,8 +2240,8 @@ function buildCard(wOrIt, i, metaText, ns){
     b.appendChild(el("span","ltr", LETTERS[k]));
     b.appendChild(el("span","lbl", o));
     b.addEventListener("click", ()=>{
-      if(examKey){ if(submitted[examKey]) return; s.picked = k; paint(); refresh(); return; }   // mock: change freely until submit
-      if(isLocked(s)) return; s.picked = k; paint(); refresh();
+      if(examKey){ if(submitted[examKey]) return; s.picked = k; saveActivity(); paint(); refresh(); return; }   // mock: change freely until submit
+      if(isLocked(s)) return; s.picked = k; saveActivity(); paint(); refresh();
     });
     list.appendChild(b); return b;
   });
@@ -2225,8 +2256,8 @@ function buildCard(wOrIt, i, metaText, ns){
   const result = el("div","result"); result.setAttribute("aria-live","polite");
   card.appendChild(result);
 
-  showBtn.addEventListener("click", ()=>{ if(isLocked(s)) return; s.shown = true; paint(); refresh(); resetBtn.focus(); });
-  resetBtn.addEventListener("click", ()=>{ s.picked = null; s.shown = false; paint(); refresh(); showBtn.focus(); });
+  showBtn.addEventListener("click", ()=>{ if(isLocked(s)) return; s.shown = true; saveActivity(); paint(); refresh(); resetBtn.focus(); });
+  resetBtn.addEventListener("click", ()=>{ s.picked = null; s.shown = false; saveActivity(); paint(); refresh(); showBtn.focus(); });
 
   function paint(){
     const locked = examKey ? submitted[examKey] : isLocked(s);
@@ -2273,7 +2304,7 @@ function buildCard(wOrIt, i, metaText, ns){
     if(notes.length){ const r = el("span","ref", notes.join(" ")); result.appendChild(r); }
   }
   paint();
-  return {card, reset(){ s.picked = null; s.shown = false; paint(); }};
+  return {card, reset(){ s.picked = null; s.shown = false; saveActivity(); paint(); }};
 }
 
 /* Everything shown in a given view, as {w, i, ns, q, nptel} */
@@ -2412,6 +2443,7 @@ function refresh(){
 
 function go(v, scroll){
   view = v;
+  try{ localStorage.setItem(STORAGE_KEY_VIEW, v); }catch(e){}
   try{ if(location.hash !== "#"+v) history.replaceState(null,"","#"+v); }catch(e){ /* blocked in sandboxed previews; the week just isn't kept in the URL */ }
   render();
   if(scroll) window.scrollTo({top:0});
@@ -2456,11 +2488,23 @@ function go(v, scroll){
 $("resetView").addEventListener("click", ()=>{
   itemsFor(view).forEach(it=>{ const s = stateFor(it.w, it.i, it.ns); s.picked = null; s.shown = false; });
   if(isMock(view)) submitted[view] = false;
+  saveActivity();
   render();
 });
+
+$("clearAllBtn").addEventListener("click", ()=>{
+  if(confirm("Are you sure you want to reset all your progress, answers, and mock test scores?")){
+    Object.keys(state).forEach(k => delete state[k]);
+    Object.keys(submitted).forEach(k => submitted[k] = false);
+    saveActivity();
+    render();
+  }
+});
+
 function submitTest(){
   if(!isMock(view) || submitted[view]) return;
   submitted[view] = true;
+  saveActivity();
   render();
   window.scrollTo({top:0});
 }
@@ -2494,7 +2538,9 @@ $("themeBtn").addEventListener("click", ()=>{
   try{ localStorage.setItem("pol-theme", next); }catch(e){ /* storage blocked: choice lasts for this visit only */ }
 });
 
-const start = (location.hash || "").replace("#","");
+loadActivity();
+const savedView = (() => { try { return localStorage.getItem(STORAGE_KEY_VIEW); } catch(e){ return null; } })();
+const start = (location.hash || "").replace("#","") || savedView || "0";
 go((start === "all" || isMock(start) || (/^\d+$/.test(start) && Number(start) <= 12)) ? start : "0", false);
 </script>
 </body>
