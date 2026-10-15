@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
 <meta name="theme-color" content="#1B3B6F">
 <title>NPTEL Online Certification Examination - Psychology of Learning</title>
 <script>try{ if(localStorage.getItem("pol-theme") === "dark") document.documentElement.setAttribute("data-theme","dark"); }catch(e){}</script>
@@ -715,10 +715,18 @@
   }
 
   /* TCS Summary Table in Submit Modal */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 12px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+  }
   .tcs-table {
     width: 100%;
+    min-width: 500px;
     border-collapse: collapse;
-    margin: 14px 0;
     font-size: 0.84rem;
   }
   .tcs-table th, .tcs-table td {
@@ -732,35 +740,328 @@
   }
   .tcs-table td:first-child, .tcs-table th:first-child { text-align: left; }
 
+  /* Palette Header & Close Button */
+  .palette-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--body-bg);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .palette-close-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.6rem;
+    line-height: 1;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  .palette-close-btn:hover { color: var(--text-main); }
+
+  /* Backdrop for mobile palette drawer */
+  .palette-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 104;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .palette-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Subbar button for opening palette on mobile */
+  .btn-subbar-palette {
+    display: none;
+    background: var(--primary-light);
+    color: #FFFFFF;
+    font-weight: 700;
+  }
+  .btn-subbar-palette:hover {
+    background: var(--primary);
+    color: #FFFFFF;
+  }
+
   /* Mobile floating palette button */
   .mobile-palette-toggle {
     display: none;
     position: fixed;
-    bottom: 16px;
-    right: 16px;
+    bottom: 96px;
+    right: 14px;
     background: var(--primary);
     color: #FFFFFF;
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-radius: 30px;
     font-weight: 700;
-    font-size: 0.88rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    z-index: 90;
+    font-size: 0.84rem;
+    box-shadow: 0 4px 14px rgba(27, 59, 111, 0.35);
+    z-index: 85;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    touch-action: manipulation;
   }
+  .mobile-palette-toggle:active {
+    transform: scale(0.96);
+  }
+
+  /* ===== MOBILE & RESPONSIVE BREAKPOINTS ===== */
   @media (max-width: 900px) {
-    .mobile-palette-toggle { display: block; }
+    .palette-backdrop { display: block; }
+    .btn-subbar-palette { display: inline-flex; }
+    .mobile-palette-toggle { display: inline-flex; }
+    .palette-close-btn { display: block; }
+
     .palette-panel {
       position: fixed;
       right: 0;
       top: 0;
       bottom: 0;
-      width: 320px;
+      width: min(340px, 86vw);
       z-index: 105;
-      box-shadow: -4px 0 15px rgba(0,0,0,0.25);
+      background: var(--card-bg);
+      box-shadow: -4px 0 20px rgba(0,0,0,0.3);
       transform: translateX(100%);
-      transition: transform 0.25s ease-in-out;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      overscroll-behavior: contain;
     }
-    .palette-panel.open { transform: translateX(0); }
+    .palette-panel.open {
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tcs-header {
+      padding: 8px 12px;
+      gap: 10px;
+    }
+    .nptel-logo-badge {
+      font-size: 0.85rem;
+      padding: 3px 8px;
+    }
+    .header-title-block h1 {
+      font-size: 0.95rem;
+    }
+    .header-title-block p {
+      font-size: 0.72rem;
+    }
+    .candidate-card {
+      padding: 2px 8px;
+    }
+
+    .tcs-subbar {
+      padding: 8px 12px;
+      gap: 8px;
+    }
+    .subbar-left {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+    }
+    .select-label {
+      font-size: 0.78rem;
+    }
+    .test-dropdown {
+      width: 100%;
+      min-width: 0;
+      font-size: 0.85rem;
+      padding: 8px 10px;
+    }
+    .section-tag {
+      align-self: flex-start;
+      font-size: 0.72rem;
+    }
+    .subbar-right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .timer-box {
+      font-size: 0.88rem;
+      padding: 4px 10px;
+    }
+    .btn-subbar {
+      font-size: 0.78rem;
+      padding: 5px 8px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header-title-block p {
+      display: none;
+    }
+    .candidate-info span {
+      display: none;
+    }
+    .candidate-avatar {
+      width: 30px;
+      height: 30px;
+      font-size: 0.78rem;
+    }
+    .candidate-info b {
+      font-size: 0.8rem;
+    }
+    .btn-theme-toggle {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+    }
+
+    .cbt-main {
+      display: block;
+    }
+    .q-panel {
+      border-right: none;
+      min-height: auto;
+    }
+    .q-meta-strip {
+      padding: 8px 12px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      font-size: 0.78rem;
+    }
+    .q-body {
+      padding: 16px 12px 24px 12px;
+    }
+    .q-num-heading {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+    }
+    .q-text {
+      font-size: 0.98rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .q-options {
+      gap: 10px;
+    }
+    .cbt-opt {
+      padding: 12px 14px;
+      border-radius: 8px;
+      gap: 12px;
+      touch-action: manipulation;
+    }
+    .opt-text {
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+    .opt-radio-disc {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Sticky 2x2 Action Bar */
+    .q-actions-bar {
+      position: sticky;
+      bottom: 0;
+      z-index: 70;
+      background: var(--subbar-bg);
+      border-top: 1.5px solid var(--border-color);
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+      padding: 8px 10px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .actions-left, .actions-right {
+      display: contents;
+    }
+    #btnMarkReview {
+      order: 1;
+      grid-column: 1 / 2;
+      width: 100%;
+      padding: 10px 6px;
+      font-size: 0.78rem;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #btnClearResponse {
+      order: 2;
+      grid-column: 2 / 3;
+      width: 100%;
+      padding: 10px 8px;
+      font-size: 0.78rem;
+      text-align: center;
+    }
+    #btnPrev {
+      order: 3;
+      grid-column: 1 / 2;
+      width: 100%;
+      padding: 11px 10px;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    #btnSaveNext {
+      order: 4;
+      grid-column: 2 / 3;
+      width: 100%;
+      padding: 11px 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .solution-box {
+      margin-top: 18px;
+      padding: 14px;
+      font-size: 0.88rem;
+    }
+
+    .modal-box {
+      width: 95%;
+      max-height: 88vh;
+      border-radius: 10px;
+    }
+    .modal-header {
+      padding: 10px 14px;
+      font-size: 0.9rem;
+    }
+    .modal-body {
+      padding: 14px;
+      font-size: 0.86rem;
+    }
+    .modal-footer {
+      padding: 10px 14px;
+      flex-wrap: wrap;
+    }
+    .modal-footer .btn-tcs {
+      flex: 1;
+      padding: 9px 12px;
+      font-size: 0.84rem;
+    }
+
+    .palette-legend {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 10px 14px;
+      font-size: 0.74rem;
+    }
+    .palette-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+    .palette-btn {
+      font-size: 0.82rem;
+    }
+    .palette-footer {
+      padding: 12px 14px;
+      gap: 8px;
+    }
   }
 </style>
 </head>
@@ -803,6 +1104,7 @@
     </div>
     <button class="btn-subbar" id="btnQuestionPaper" type="button">📋 Question Paper</button>
     <button class="btn-subbar" id="btnInstructions" type="button">ℹ️ Instructions</button>
+    <button class="btn-subbar btn-subbar-palette" id="btnSubbarPalette" type="button">📋 Palette (<span id="subbarAnsweredBadge">0</span>)</button>
   </div>
 </section>
 
@@ -845,12 +1147,15 @@
 
   <!-- RIGHT: QUESTION PALETTE SIDEBAR -->
   <aside class="palette-panel" id="palettePanel">
-    <div class="palette-candidate-box">
-      <div class="candidate-thumb">GG</div>
-      <div class="palette-candidate-details">
-        <b>Gaurav Gautam</b>
-        <span>Paper: Psychology of Learning</span>
+    <div class="palette-header-bar">
+      <div class="palette-candidate-box">
+        <div class="candidate-thumb">GG</div>
+        <div class="palette-candidate-details">
+          <b>Gaurav Gautam</b>
+          <span>Paper: Psychology of Learning</span>
+        </div>
       </div>
+      <button class="palette-close-btn" id="btnClosePalette" type="button" aria-label="Close Palette">&times;</button>
     </div>
 
     <!-- TCS Status Legend -->
@@ -880,6 +1185,7 @@
   </aside>
 </main>
 
+<div class="palette-backdrop" id="paletteBackdrop"></div>
 <button class="mobile-palette-toggle" id="mobilePaletteToggle" type="button">📋 Question Palette</button>
 
 <!-- ===== MODAL 1: SUBMIT CONFIRMATION ===== -->
@@ -891,30 +1197,32 @@
     </div>
     <div class="modal-body">
       <p>Please review your test status before final submission:</p>
-      <table class="tcs-table">
-        <thead>
-          <tr>
-            <th>Section</th>
-            <th>Total</th>
-            <th>Answered</th>
-            <th>Not Answered</th>
-            <th>Marked</th>
-            <th>Ans & Marked</th>
-            <th>Not Visited</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Psychology of Learning</td>
-            <td id="tblTotal">50</td>
-            <td id="tblAnswered">0</td>
-            <td id="tblNotAnswered">0</td>
-            <td id="tblMarked">0</td>
-            <td id="tblMarkedAns">0</td>
-            <td id="tblNotVisited">0</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="tcs-table">
+          <thead>
+            <tr>
+              <th>Section</th>
+              <th>Total</th>
+              <th>Answered</th>
+              <th>Not Answered</th>
+              <th>Marked</th>
+              <th>Ans & Marked</th>
+              <th>Not Visited</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Psychology of Learning</td>
+              <td id="tblTotal">50</td>
+              <td id="tblAnswered">0</td>
+              <td id="tblNotAnswered">0</td>
+              <td id="tblMarked">0</td>
+              <td id="tblMarkedAns">0</td>
+              <td id="tblNotVisited">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p style="font-size:0.86rem; color:var(--text-muted); margin-top:10px;">
         ⚠️ <b>Note:</b> Once you click "Confirm & Submit", your answers will be locked, your score will be computed, and full explanations with lecture references will be unlocked.
       </p>
@@ -3258,6 +3566,9 @@ function renderPalette(){
       curIdx = idx;
       saveActivity();
       renderExam();
+      if(window.innerWidth <= 900){
+        closePalette();
+      }
     });
 
     grid.appendChild(btn);
@@ -3284,6 +3595,15 @@ function updateLegend(){
   document.getElementById("legNotVisitedCount").textContent = notVis;
   document.getElementById("legMarkedCount").textContent = marked;
   document.getElementById("legMarkedAnsCount").textContent = markedAns;
+
+  const subbarBadge = document.getElementById("subbarAnsweredBadge");
+  if(subbarBadge) subbarBadge.textContent = `${ans}/${qs.length}`;
+
+  const mobToggle = document.getElementById("mobilePaletteToggle");
+  const panel = document.getElementById("palettePanel");
+  if(mobToggle && panel && !panel.classList.contains("open")){
+    mobToggle.textContent = `📋 Palette (${ans}/${qs.length})`;
+  }
 
   // If submitted, show scorecard
   if(submitted[curView]){
@@ -3426,10 +3746,39 @@ document.getElementById("btnCloseInst2").addEventListener("click", ()=>{ documen
 /* Mobile Drawer */
 const mobileToggle = document.getElementById("mobilePaletteToggle");
 const palettePanel = document.getElementById("palettePanel");
-mobileToggle.addEventListener("click", ()=>{
-  palettePanel.classList.toggle("open");
-  mobileToggle.textContent = palettePanel.classList.contains("open") ? "✖ Close Palette" : "📋 Question Palette";
-});
+const paletteBackdrop = document.getElementById("paletteBackdrop");
+const btnClosePalette = document.getElementById("btnClosePalette");
+const btnSubbarPalette = document.getElementById("btnSubbarPalette");
+
+function openPalette(){
+  if(palettePanel) palettePanel.classList.add("open");
+  if(paletteBackdrop) paletteBackdrop.classList.add("open");
+  if(mobileToggle) mobileToggle.textContent = "✖ Close";
+  document.body.style.overflow = "hidden";
+}
+
+function closePalette(){
+  if(palettePanel) palettePanel.classList.remove("open");
+  if(paletteBackdrop) paletteBackdrop.classList.remove("open");
+  document.body.style.overflow = "";
+  updateLegend();
+}
+
+if(mobileToggle){
+  mobileToggle.addEventListener("click", ()=>{
+    if(palettePanel && palettePanel.classList.contains("open")) closePalette();
+    else openPalette();
+  });
+}
+if(btnSubbarPalette){
+  btnSubbarPalette.addEventListener("click", openPalette);
+}
+if(btnClosePalette){
+  btnClosePalette.addEventListener("click", closePalette);
+}
+if(paletteBackdrop){
+  paletteBackdrop.addEventListener("click", closePalette);
+}
 
 /* Timer Ticking */
 setInterval(()=>{
