@@ -117,7 +117,7 @@
 <header class="top">
   <div class="wrap">
     <h1>Psychology of Learning</h1>
-    <p class="sub">NPTEL assignment questions (Weeks 0–12, 130 questions) with practice mode & 2 assignment mock tests, plus 5 official NPTEL mock tests (30 questions each with answer keys). Pick an option to check it, or take the timed tests.</p>
+    <p class="sub">NPTEL assignment questions (Weeks 0–12, 130 questions) with practice mode & 4 assignment mock tests (50 questions · 2 marks each · 100 marks total), plus 5 official NPTEL mock tests (30 questions each with answer keys). Pick an option to check it, or take the timed tests.</p>
   </div>
 </header>
 
@@ -304,38 +304,42 @@ const WEEKS = [
  ["___ hypothesis suggests that social processes influence how information is selected, organized, integrated, and retrieved.",["activation","cognitive influence","interaction","social cue strength"],1,"30"]
 ]},
 /* ---------- Week 12 ---------- */
-{ n:12, banner:"No answer-key PDF was provided for this week. The marked answers are the ones from your saved submission on the course page.", qs:[
- ["Sustainability in economic sustainability is ___.",["multidimensional","bidimensional","unidimensional","none of the given"],0],
- ["The term “sustainable development” was first mentioned in a book related to the 1972 UN Stockholm conference on ___.",["water","poverty","economic crisis","human environment"],3],
- ["Environmental sustainability focuses on impacts of processes, products and services on ___.",["water","biodiversity","human health","all of the given"],3],
- ["Which of the following does not come under social sustainability?",["Labour practices","Revenue generation","Human rights","Business ethics"],1],
- ["SDG ___ focuses on clean water and sanitation.",["1","17","6","3"],2],
- ["SDG 16 focuses on ___.",["No poverty","No hunger","Good health","Peace and justice"],3],
- ["On 20 October 2020, the Higher Education Sustainability Initiative (HESI) raised the flag of higher education as a driver for sustainable development and inclusive societies on the first day of the ___ 2020.",["National Sustainability Meeting","National Teachers Meeting","Global Childrens’ Meeting","Global Education Meeting"],3],
- ["Education is related to all SDGs.",TF,0],
- ["Successful implementation of ESD requires a shift in focus from ___.",["teaching to learning","learning to teaching","reading to speaking","knowing to ignoring"],0],
- ["___ competency is the ability to reflect on one’s own role in the local community and (global) society.",["collaboration","self-awareness","strategic","normative"],1]
+{ n:12, qs:[
+ ["Sustainability in economic sustainability is ___.",["multidimensional","bidimensional","unidimensional","none of the given"],2,"2"],
+ ["The term “sustainable development” was first mentioned in a book related to the 1972 UN Stockholm conference on ___.",["water","poverty","economic crisis","human environment"],3,"3"],
+ ["Environmental sustainability focuses on impacts of processes, products and services on ___.",["water","biodiversity","human health","all of the given"],3,"5"],
+ ["Which of the following does not come under social sustainability?",["Labour practices","Revenue generation","Human rights","Business ethics"],1,"6-7"],
+ ["SDG ___ focuses on clean water and sanitation.",["1","17","6","3"],2,"9"],
+ ["SDG 16 focuses on ___.",["No poverty","No hunger","Good health","Peace and justice"],3,"9"],
+ ["On 20 October 2020, the Higher Education Sustainability Initiative (HESI) raised the flag of higher education as a driver for sustainable development and inclusive societies on the first day of the ___ 2020.",["National Sustainability Meeting","National Teachers Meeting","Global Childrens’ Meeting","Global Education Meeting"],3,"14"],
+ ["Education is related to all SDGs.",TF,0,"24"],
+ ["Successful implementation of ESD requires a shift in focus from ___.",["teaching to learning","learning to teaching","reading to speaking","knowing to ignoring"],0,"29"],
+ ["___ competency is the ability to reflect on one’s own role in the local community and (global) society.",["collaboration","self-awareness","strategic","normative"],1,"62"]
 ]}
 ];
 
-/* ---------- Mock tests: fixed picks from the questions above ---------- */
+/* ---------- Mock tests: fixed picks from Weeks 1 to 12 (50 questions · 2 marks each) ---------- */
 function seeded(seed){ return ()=> (seed = (seed*1664525 + 1013904223) >>> 0) / 4294967296; }
 function shuffled(arr, rnd){
   const a = arr.slice();
   for(let i = a.length-1; i > 0; i--){ const j = Math.floor(rnd()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
-/* MOCKS[0], MOCKS[1]: lists of [week, questionIndex]; 50 each, no overlap */
+/* MOCKS[0..3]: lists of [week, questionIndex]; 50 questions each from Weeks 1 to 12 */
 const MOCKS = (function(){
-  const rnd = seeded(2026);
-  const m = [[], []];
-  WEEKS.forEach((wk, w)=>{
-    const order = shuffled(wk.qs.map((_,i)=>i), rnd);
-    const k = w <= 10 ? 4 : 3;               // 11*4 + 2*3 = 50 per test
-    order.slice(0, k).forEach(i=>m[0].push([w,i]));
-    order.slice(k, 2*k).forEach(i=>m[1].push([w,i]));
+  const seeds = [2026, 3037, 4048, 5059];
+  return seeds.map(s => {
+    const rnd = seeded(s);
+    const testItems = [];
+    // 12 weeks: select 2 weeks to have 5 questions, other 10 weeks have 4 questions = 50 questions
+    const extraWeeks = shuffled([1,2,3,4,5,6,7,8,9,10,11,12], rnd).slice(0, 2);
+    for(let w = 1; w <= 12; w++){
+      const k = extraWeeks.includes(w) ? 5 : 4;
+      const order = shuffled(WEEKS[w].qs.map((_,i)=>i), rnd);
+      order.slice(0, k).forEach(i => testItems.push([w, i]));
+    }
+    return shuffled(testItems, rnd);
   });
-  return m.map(list=>shuffled(list, rnd));
 })();
 
 /* ---------- Official NPTEL Mock Tests (noc23_hs85) ---------- */
@@ -2155,10 +2159,14 @@ const NPTEL_TESTS = {
 /* ---------- App ---------- */
 const LETTERS = "ABCDEFG";
 const state = {};            // key "w-i" -> {picked, shown}
+const isAssignMock = v => /^m[1-4]$/.test(v);
 const isNptelMock = v => /^nm[1-5]$/.test(v);
-const isMock = v => v === "m1" || v === "m2" || isNptelMock(v);
-const submitted = {m1:false, m2:false, nm1:false, nm2:false, nm3:false, nm4:false, nm5:false};   // mock tests: answers are hidden until submitted
-let view = "0";              // "0".."12", "all", "m1", "m2", "nm1".."nm5"
+const isMock = v => isAssignMock(v) || isNptelMock(v);
+const submitted = {
+  m1: false, m2: false, m3: false, m4: false,
+  nm1: false, nm2: false, nm3: false, nm4: false, nm5: false
+};
+let view = "0";              // "0".."12", "all", "m1".."m4", "nm1".."nm5"
 let cards = [];              // current view's card controllers
 
 const $ = id => document.getElementById(id);
@@ -2186,7 +2194,7 @@ function buildCard(wOrIt, i, metaText, ns){
   const q = it.q || WEEKS[w].qs[i];
   const [text, opts, ans, slide, extra] = q;
   const s = stateFor(w, i, ns);
-  const examKey = ns ? ns.slice(0,-1) : null;   // "m1" / "m2" / "nm1".."nm5" for mock tests
+  const examKey = ns ? ns.slice(0,-1) : null;   // "m1".."m4" or "nm1".."nm5"
 
   const card = el("article","q");
   card.id = (ns||"").replace(":","-")+(it.nptel || ("w"+w))+"q"+(i+1);
@@ -2244,16 +2252,24 @@ function buildCard(wOrIt, i, metaText, ns){
     const correctText = LETTERS[ans]+". "+opts[ans];
     const line = el("div");
     if(s.picked !== null){
-      if(s.picked === ans){ result.classList.add("good"); line.textContent = "Correct. " + correctText; }
-      else { result.classList.add("miss"); line.textContent = "Not quite. Correct answer: " + correctText; }
+      if(s.picked === ans){
+        result.classList.add("good");
+        line.textContent = isAssignMock(examKey) ? ("Correct (+2 marks). " + correctText) : ("Correct. " + correctText);
+      } else {
+        result.classList.add("miss");
+        line.textContent = isAssignMock(examKey) ? ("Not quite (0 / 2 marks). Correct answer: " + correctText) : ("Not quite. Correct answer: " + correctText);
+      }
     } else {
-      line.textContent = (examKey ? "Not answered. Correct answer: " : "Answer: ") + correctText;
+      line.textContent = isAssignMock(examKey)
+        ? ("Not answered (0 / 2 marks). Correct answer: " + correctText)
+        : ((examKey ? "Not answered. Correct answer: " : "Answer: ") + correctText);
     }
     result.appendChild(line);
     const notes = [];
-    if(slide) notes.push("Lecture notes, Week "+w+", slide "+slide+".");
+    if(slide){
+      notes.push(isAssignMock(examKey) ? ("Lecture notes, slide "+slide+".") : ("Lecture notes, Week "+w+", slide "+slide+"."));
+    }
     if(extra) notes.push(extra);
-    if(!slide && w === 12 && !it.nptel) notes.push("Marked answer comes from your submission; no official key was supplied.");
     if(notes.length){ const r = el("span","ref", notes.join(" ")); result.appendChild(r); }
   }
   paint();
@@ -2264,7 +2280,10 @@ function buildCard(wOrIt, i, metaText, ns){
 function itemsFor(v){
   if(!v) return [];
   if(isNptelMock(v)) return (NPTEL_TESTS[v] || []).map((q, i)=>({w: v, i, ns: v+":", q, nptel: v}));
-  if(v === "m1" || v === "m2") return MOCKS[v === "m1" ? 0 : 1].map(([w,i])=>({w, i, ns: v+":"}));
+  if(isAssignMock(v)){
+    const idx = Number(v.slice(1)) - 1; // "m1"->0, "m2"->1, "m3"->2, "m4"->3
+    return (MOCKS[idx] || []).map(([w,i])=>({w, i, ns: v+":"}));
+  }
   const weeks = v === "all" ? WEEKS.map(x=>x.n) : [Number(v)];
   const items = [];
   weeks.forEach(w=>{
@@ -2300,8 +2319,9 @@ function render(){
         const diffMatch = it.q[4].match(/Difficulty:\s*(\w+)/i);
         if(diffMatch) meta += " · " + diffMatch[1];
       }
-    } else if(mock){
-      meta = "Question "+(n+1)+" of "+items.length+", from Week "+it.w;
+    } else if(isAssignMock(view)){
+      // Do NOT mention the question from which week!
+      meta = "Question "+(n+1)+" of "+items.length+" · 2 marks";
     }
     list.appendChild(buildCard(it, it.i, meta, it.ns).card);
   });
@@ -2309,7 +2329,7 @@ function render(){
   let title = "Week " + view;
   if(all) title = "All weeks";
   else if(nptel) title = "NPTEL Mock Test " + view.slice(2) + " (Course ID: noc23_hs85)";
-  else if(mock) title = "Mock test " + view.slice(1);
+  else if(isAssignMock(view)) title = "Assignment Mock Test " + view.slice(1) + " (100 Marks)";
   $("viewTitle").textContent = title;
 
   const ban = $("banner"); ban.textContent = "";
@@ -2321,12 +2341,16 @@ function render(){
     } else {
       ban.appendChild(el("div","banner","Official NPTEL Mock Exam "+num+" ("+items.length+" questions). Choose one option per question (you can change it before submitting) and press Submit test to check your score and view the official answer key."));
     }
-  } else if(mock){
+  } else if(isAssignMock(view)){
+    const num = view.slice(1);
+    const items = itemsFor(view);
     if(submitted[view]){
       const t = tally(items);
-      ban.appendChild(el("div","banner","Submitted. Score: "+t.correct+" of "+t.total+" ("+Math.round(t.correct/t.total*100)+"%). Wrong: "+(t.answered-t.correct)+". Not answered: "+(t.total-t.answered)+". Each question below now shows its answer."));
+      const marks = t.correct * 2;
+      const totalMarks = t.total * 2;
+      ban.appendChild(el("div","banner","Submitted! Final Score: "+marks+" / "+totalMarks+" marks ("+Math.round(marks/totalMarks*100)+"%). Correct: "+t.correct+" ("+marks+" marks). Wrong: "+(t.answered-t.correct)+" (0 marks). Unanswered: "+(t.total-t.answered)+". Detailed solutions are shown below."));
     } else {
-      ban.appendChild(el("div","banner","50 questions taken from Weeks 0 to 12. Choose one option per question (you can change it) and press Submit test to see the answers and your score. The two mock tests share no questions, and each keeps the same questions and order every time."));
+      ban.appendChild(el("div","banner","Assignment Mock Test "+num+" (50 questions · 2 marks each · 100 marks total) drawn from Weeks 1 to 12. Select one option per question (you can change it anytime before submission). Press Submit test to calculate your score out of 100 marks."));
     }
   } else if(!all && WEEKS[Number(view)].banner){
     ban.appendChild(el("div","banner", WEEKS[Number(view)].banner));
@@ -2344,7 +2368,9 @@ function render(){
     $("nextWrap").hidden = false;
     if(view === "12") nb.textContent = "Next: Mock test 1";
     else if(view === "m1") nb.textContent = "Next: Mock test 2";
-    else if(view === "m2") nb.textContent = "Next: NPTEL Mock Test 1";
+    else if(view === "m2") nb.textContent = "Next: Mock test 3";
+    else if(view === "m3") nb.textContent = "Next: Mock test 4";
+    else if(view === "m4") nb.textContent = "Next: NPTEL Mock Test 1";
     else if(view === "nm1") nb.textContent = "Next: NPTEL Mock Test 2";
     else if(view === "nm2") nb.textContent = "Next: NPTEL Mock Test 3";
     else if(view === "nm3") nb.textContent = "Next: NPTEL Mock Test 4";
@@ -2362,9 +2388,17 @@ function render(){
 function refresh(){
   const t = tally(itemsFor(view));
   const open = isMock(view) && !submitted[view];
-  $("score").innerHTML = open
-    ? "Answered <b>"+t.answered+"</b> of "+t.total+"."
-    : "Answered <b>"+t.answered+"</b> of "+t.total+". Correct <b>"+t.correct+"</b>.";
+  if(isAssignMock(view)){
+    const marks = t.correct * 2;
+    const totalMarks = t.total * 2;
+    $("score").innerHTML = open
+      ? "Answered <b>"+t.answered+"</b> of "+t.total+" (50 questions · 2 marks each · 100 marks)."
+      : "Answered <b>"+t.answered+"</b> of "+t.total+". Score: <b>"+marks+" / "+totalMarks+" marks</b> ("+Math.round(marks/totalMarks*100)+"%).";
+  } else {
+    $("score").innerHTML = open
+      ? "Answered <b>"+t.answered+"</b> of "+t.total+"."
+      : "Answered <b>"+t.answered+"</b> of "+t.total+". Correct <b>"+t.correct+"</b>.";
+  }
   $("fill").style.width = (t.total ? (t.answered/t.total*100) : 0) + "%";
   const left = t.total - t.answered;
   $("submitBottom").textContent = "Submit test" + (left ? " ("+left+" unanswered)" : "");
@@ -2395,7 +2429,12 @@ function go(v, scroll){
   all.addEventListener("click", ()=>go("all", false));
   box.appendChild(all);
 
-  [["m1","Mock test 1"],["m2","Mock test 2"]].forEach(([v,label])=>{
+  [
+    ["m1","Mock test 1"],
+    ["m2","Mock test 2"],
+    ["m3","Mock test 3"],
+    ["m4","Mock test 4"]
+  ].forEach(([v,label])=>{
     const m = el("button","chip",label); m.type = "button"; m.dataset.view = v;
     m.addEventListener("click", ()=>go(v, false));
     box.appendChild(m);
@@ -2431,7 +2470,9 @@ $("nextBtn").addEventListener("click", ()=>{
   let nxt = "0";
   if(view === "12") nxt = "m1";
   else if(view === "m1") nxt = "m2";
-  else if(view === "m2") nxt = "nm1";
+  else if(view === "m2") nxt = "m3";
+  else if(view === "m3") nxt = "m4";
+  else if(view === "m4") nxt = "nm1";
   else if(view === "nm1") nxt = "nm2";
   else if(view === "nm2") nxt = "nm3";
   else if(view === "nm3") nxt = "nm4";
